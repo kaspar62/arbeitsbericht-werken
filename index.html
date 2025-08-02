@@ -25,11 +25,20 @@
 
         .container {
             max-width: 900px;
+            width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
+        }
+        
+        /* iPad specific centering */
+        @media (min-width: 768px) {
+            .container {
+                width: 90%;
+                max-width: 800px;
+            }
         }
 
         .header {
@@ -374,9 +383,9 @@
             background: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             z-index: 10000;
-            padding: 20px;
+            padding: 10px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
@@ -384,13 +393,22 @@
         .evaluation-content {
             background: white;
             border-radius: 15px;
-            padding: 20px;
-            max-width: 900px;
+            padding: 15px;
+            max-width: 95vw;
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            margin: 20px auto;
+            max-height: none;
+            overflow-y: visible;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        @media (min-width: 768px) {
+            .evaluation-content {
+                max-width: 90%;
+                width: auto;
+                min-width: 700px;
+                padding: 25px;
+            }
         }
 
         .evaluation-header {
@@ -413,19 +431,34 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            font-size: 12px;
+            font-size: 11px;
             display: block;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+        }
+        
+        @media (min-width: 768px) {
+            .evaluation-table {
+                font-size: 13px;
+                display: table;
+            }
         }
 
         .evaluation-table th,
         .evaluation-table td {
             border: 2px solid #34495e;
-            padding: 8px;
+            padding: 6px;
             text-align: left;
             vertical-align: top;
-            min-width: 100px;
+            min-width: 80px;
+        }
+        
+        @media (min-width: 768px) {
+            .evaluation-table th,
+            .evaluation-table td {
+                padding: 10px;
+                min-width: auto;
+            }
         }
 
         .evaluation-table th {
@@ -516,7 +549,7 @@
         }
 
         /* iPad specific styles */
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
             body {
                 padding: 0;
             }
@@ -524,6 +557,7 @@
             .container {
                 border-radius: 0;
                 min-height: 100vh;
+                width: 100%;
             }
             
             .form-container {
@@ -539,6 +573,30 @@
                 margin: 5px 0;
             }
             
+            .evaluation-table {
+                width: 100%;
+                table-layout: fixed;
+            }
+            
+            .evaluation-table th:first-child,
+            .evaluation-table td:first-child {
+                width: 25%;
+            }
+            
+            .evaluation-table th:nth-child(2),
+            .evaluation-table td:nth-child(2) {
+                width: 35%;
+            }
+            
+            .evaluation-table th:nth-child(3),
+            .evaluation-table td:nth-child(3),
+            .evaluation-table th:nth-child(4),
+            .evaluation-table td:nth-child(4),
+            .evaluation-table th:nth-child(5),
+            .evaluation-table td:nth-child(5) {
+                width: 13%;
+            }
+            
             .nav-buttons {
                 flex-direction: column;
             }
@@ -548,18 +606,20 @@
             }
         }
 
-        /* Prevent iOS rubber band scrolling */
-        html {
-            position: fixed;
-            height: 100%;
-            overflow: hidden;
-        }
+        /* Prevent iOS rubber band scrolling on iPhone only */
+        @media (max-width: 767px) {
+            html {
+                position: fixed;
+                height: 100%;
+                overflow: hidden;
+            }
 
-        body {
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            body {
+                position: fixed;
+                height: 100%;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
     </style>
 </head>
@@ -1450,9 +1510,44 @@
             console.log('Event listeners bound successfully');
         }
 
+        // Clear PWA cache function
+        function clearPWACache() {
+            if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                    cacheNames.forEach(function(cacheName) {
+                        caches.delete(cacheName);
+                    });
+                    console.log('PWA Cache cleared');
+                });
+            }
+            
+            // Force reload from server
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                    }
+                    console.log('Service Workers unregistered');
+                });
+            }
+        }
+
         // Initialize on page load
         window.addEventListener('load', function() {
             console.log('Page loaded, initializing...');
+            
+            // Clear cache if version parameter is present
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('clear') || urlParams.get('update') || urlParams.get('neu')) {
+                clearPWACache();
+                // Remove parameter from URL
+                const url = new URL(window.location);
+                url.searchParams.delete('clear');
+                url.searchParams.delete('update'); 
+                url.searchParams.delete('neu');
+                window.history.replaceState({}, document.title, url);
+            }
+            
             init();
             bindEventListeners();
         });
