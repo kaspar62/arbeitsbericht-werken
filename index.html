@@ -987,6 +987,20 @@
             }
         }
 
+        // Safe wrapper to prevent double execution
+        function createNewPageSafe() {
+            console.log('createNewPageSafe called');
+            
+            // Check if there's an unsaved page
+            const currentPageData = pages[currentPage];
+            if (currentPageData.date && !currentPageData.saved) {
+                alert('Bitte speichere zuerst die aktuelle Seite, bevor du eine neue erstellst.');
+                return;
+            }
+            
+            createNewPage();
+        }
+        
         function createNewPage() {
             console.log('createNewPage called');
             
@@ -1429,8 +1443,16 @@
             alert('✅ Arbeitsbericht wurde heruntergeladen!\n\nDateiname: ' + fileName + '\nInsgesamt ' + pageCount + ' Seiten gespeichert.\n\nDu findest die Datei in deinem Download-Ordner.');
         }
 
+        // Track if events are already bound
+        let eventsBound = false;
+        
         // Bind event listeners
         function bindEventListeners() {
+            if (eventsBound) {
+                console.log('Events already bound, skipping');
+                return;
+            }
+            
             // Navigation buttons
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
@@ -1441,72 +1463,40 @@
             const closeEvalBtn = document.getElementById('closeEvalBtn');
             const removePhotoBtn = document.getElementById('removePhotoBtn');
             
-            // Add touch and click events
+            // Add only click events (no duplicate touch events)
             if (prevBtn) {
                 prevBtn.addEventListener('click', previousPage);
-                prevBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    previousPage();
-                });
             }
             
             if (nextBtn) {
                 nextBtn.addEventListener('click', nextPage);
-                nextBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    nextPage();
-                });
             }
             
             if (newPageBtn) {
-                newPageBtn.addEventListener('click', createNewPage);
-                newPageBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    createNewPage();
-                });
+                newPageBtn.addEventListener('click', createNewPageSafe);
             }
             
             if (previewBtn) {
                 previewBtn.addEventListener('click', previewCurrentPage);
-                previewBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    previewCurrentPage();
-                });
             }
             
             if (saveBtn) {
                 saveBtn.addEventListener('click', saveCurrentPage);
-                saveBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    saveCurrentPage();
-                });
             }
             
             if (finalSaveBtn) {
                 finalSaveBtn.addEventListener('click', finalSaveAndDownload);
-                finalSaveBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    finalSaveAndDownload();
-                });
             }
             
             if (closeEvalBtn) {
                 closeEvalBtn.addEventListener('click', closeEvaluationPopup);
-                closeEvalBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    closeEvaluationPopup();
-                });
             }
             
             if (removePhotoBtn) {
                 removePhotoBtn.addEventListener('click', removePhoto);
-                removePhotoBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    removePhoto();
-                });
             }
             
-            // Debug log
+            eventsBound = true;
             console.log('Event listeners bound successfully');
         }
 
@@ -1549,12 +1539,6 @@
             }
             
             init();
-            bindEventListeners();
-        });
-        
-        // Also try DOMContentLoaded as fallback
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM ready, binding events...');
             bindEventListeners();
         });
 
