@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Arbeitsbericht Werken</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            -webkit-font-smoothing: antialiased;
+            touch-action: pan-y;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1em;
+        }
+
+        .student-info {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .student-input {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .student-input label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .student-input input {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .student-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .page-navigation {
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .page-info {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+        }
+
+        .new-page-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            flex: 1 1 auto;
+        }
+
+        .new-page-btn:active {
+            transform: scale(0.98);
+        }
+
+        .new-page-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .prev-btn, .next-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .prev-btn:active, .next-btn:active {
+            background: #5a6fd8;
+        }
+
+        .prev-btn:disabled, .next-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .date-section {
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+        }
+
+        .date-display {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .question-section {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .question-icon {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: white;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .text-input:disabled {
+            background: #f5f5f5;
+            color: #666;
+            cursor: not-allowed;
+            -webkit-text-fill-color: #666;
+            opacity: 1;
+        }
+
+        .photo-section {
+            background: #f0f8ff;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .photo-upload {
+            display: none;
+        }
+
+        .photo-label {
+            cursor: pointer;
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            -webkit-appearance: none;
+            touch-action: manipulation;
+        }
+
+        .photo-label:active {
+            transform: scale(0.98);
+        }
+
+        .photo-label.disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .photo-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .photo-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .remove-photo {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            -webkit-appearance: none;
+            touch-action: manipulation;
+        }
+
+        .remove-photo:active {
+            background: #c0392b;
+        }
+
+        .remove-photo:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .submit-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            -webkit-appearance: none;
+            touch-action: manipulation;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .preview-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .final-save-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            font-size: 16px;
+            padding: 18px 40px;
+            margin-top: 15px;
+            width: 90%;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .saved-indicator {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            color: #155724;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .locked-indicator {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            color: #721c24;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .evaluation-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 20px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .evaluation-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .evaluation-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .evaluation-header h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .evaluation-header p {
+            color: #7f8c8d;
+            font-size: 1em;
+        }
+
+        .evaluation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 12px;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .evaluation-table th,
+        .evaluation-table td {
+            border: 2px solid #34495e;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+            min-width: 100px;
+        }
+
+        .evaluation-table th {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+
+        .evaluation-table .criteria {
+            background: #ecf0f1;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .evaluation-table .description {
+            background: #f8f9fa;
+            font-style: italic;
+        }
+
+        .evaluation-table .points {
+            text-align: center;
+            font-weight: 600;
+            background: #ffffff;
+        }
+
+        .evaluation-table .points-1 { color: #e74c3c; }
+        .evaluation-table .points-2 { color: #f39c12; }
+        .evaluation-table .points-3 { color: #27ae60; }
+
+        .evaluation-goals {
+            background: #e8f5e8;
+            border: 2px solid #27ae60;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .evaluation-goals h3 {
+            color: #27ae60;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .evaluation-goals ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .evaluation-goals li {
+            padding: 8px 0;
+            margin-left: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .evaluation-goals li:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+        }
+
+        .close-evaluation {
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            margin: 20px auto 0;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            touch-action: manipulation;
+        }
+
+        .close-evaluation:active {
+            transform: scale(0.98);
+        }
+
+        /* iPad specific styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+            
+            .container {
+                border-radius: 0;
+                min-height: 100vh;
+            }
+            
+            .form-container {
+                padding: 15px;
+            }
+            
+            .question-section {
+                padding: 15px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
+
+        /* Prevent iOS rubber band scrolling */
+        html {
+            position: fixed;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Arbeitsbericht Werken</h1>
+            <p>KASPAR HAESSIG, KUF © 2024</p>
+        </div>
+
+        <div class="student-info">
+            <div class="student-input">
+                <label for="firstName">Vorname:</label>
+                <input type="text" id="firstName" placeholder="Max" required autocomplete="off">
+            </div>
+            <div class="student-input">
+                <label for="lastName">Nachname:</label>
+                <input type="text" id="lastName" placeholder="Mustermann" required autocomplete="off">
+            </div>
+            <div class="student-input">
+                <label for="className">Klasse:</label>
+                <input type="text" id="className" placeholder="B26c" required autocomplete="off">
+            </div>
+        </div>
+
+        <div class="page-navigation">
+            <div class="page-info">
+                <span id="pageIndicator">Seite 1 von 25</span>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn prev-btn" id="prevBtn" disabled>
+                    ← Vorherige
+                </button>
+                <button class="nav-btn next-btn" id="nextBtn" disabled>
+                    Nächste →
+                </button>
+                <button class="nav-btn new-page-btn" id="newPageBtn">
+                    ➕ Neue Seite
+                </button>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="date-section">
+                <div class="date-display" id="currentDate">
+                    📅 Datum wird beim Erstellen einer neuen Seite gesetzt
+                </div>
+            </div>
+
+            <div id="pageContent">
+                <div class="question-section">
+                    <div class="question-title">
+                        <span class="question-icon">🔨</span>
+                        Was habe ich heute gemacht?
+                    </div>
+                    <textarea 
+                        id="workDescription" 
+                        class="text-input" 
+                        placeholder="Beschreibe in 1-2 Sätzen, was du heute gearbeitet hast..."
+                        maxlength="200"
+                        oninput="updateCharCounter('workDescription', 'desc-counter')"
+                        disabled
+                    ></textarea>
+                    <div id="desc-counter" class="char-counter">0/200 Zeichen</div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title">
+                        <span class="question-icon">🛠️</span>
+                        Welche Werkzeuge/Maschinen habe ich verwendet?
+                    </div>
+                    <textarea 
+                        id="toolsUsed" 
+                        class="text-input" 
+                        placeholder="Liste die Werkzeuge und Maschinen auf, die du benutzt hast..."
+                        maxlength="200"
+                        oninput="updateCharCounter('toolsUsed', 'tools-counter')"
+                        disabled
+                    ></textarea>
+                    <div id="tools-counter" class="char-counter">0/200 Zeichen</div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title">
+                        <span class="question-icon">✨</span>
+                        Was war neu für mich? Welche Erfahrungen habe ich gemacht?
+                    </div>
+                    <textarea 
+                        id="newExperiences" 
+                        class="text-input" 
+                        placeholder="Beschreibe neue Erkenntnisse oder Erfahrungen aus der heutigen Arbeit..."
+                        maxlength="200"
+                        oninput="updateCharCounter('newExperiences', 'exp-counter')"
+                        disabled
+                    ></textarea>
+                    <div id="exp-counter" class="char-counter">0/200 Zeichen</div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title">
+                        <span class="question-icon">💡</span>
+                        Was hätte ich anders oder besser machen können?
+                    </div>
+                    <textarea 
+                        id="improvements" 
+                        class="text-input" 
+                        placeholder="Überlege, was du beim nächsten Mal verbessern könntest..."
+                        maxlength="200"
+                        oninput="updateCharCounter('improvements', 'imp-counter')"
+                        disabled
+                    ></textarea>
+                    <div id="imp-counter" class="char-counter">0/200 Zeichen</div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title">
+                        <span class="question-icon">📷</span>
+                        Foto vom Projektstand
+                    </div>
+                    <div class="photo-section">
+                        <input type="file" id="photoUpload" class="photo-upload" accept="image/*" capture="environment" onchange="handlePhotoUpload(event)" disabled>
+                        <label for="photoUpload" class="photo-label disabled">
+                            📷 Foto aufnehmen/hochladen
+                        </label>
+                        <p style="color: #666; margin-top: 10px; font-size: 14px;">Zeige den aktuellen Stand deines Projekts</p>
+                        <div id="photoPreview" class="photo-preview">
+                            <img id="previewImage" src="" alt="Projekt Foto">
+                            <br>
+                            <button type="button" class="remove-photo" id="removePhotoBtn" disabled>
+                                🗑️ Foto entfernen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pageStatus"></div>
+
+                <div class="submit-section">
+                    <button type="button" class="submit-btn preview-btn" id="previewBtn" disabled>
+                        👀 Seite Vorschau
+                    </button>
+                    <button type="button" class="submit-btn" id="saveBtn" disabled>
+                        💾 Seite speichern
+                    </button>
+                    <br>
+                    <button type="button" class="submit-btn final-save-btn" id="finalSaveBtn" disabled>
+                        📄 Komplettes PDF erstellen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Evaluation Popup -->
+        <div id="evaluationPopup" class="evaluation-popup" style="display: none;">
+            <div class="evaluation-content">
+                <div class="evaluation-header">
+                    <h2>📋 Bewertung deiner Arbeitseinträge</h2>
+                    <p>So werden deine Einträge bewertet - achte darauf beim Ausfüllen!</p>
+                </div>
+
+                <div class="evaluation-goals">
+                    <h3>🎯 Lernziele</h3>
+                    <ul>
+                        <li><strong>Arbeitsjournal führen:</strong> Dokumentiere jeden Arbeitsschritt sorgfältig</li>
+                        <li><strong>Reflektieren lernen:</strong> Denke über deine Arbeit nach und lerne daraus</li>
+                        <li><strong>Fotos nutzen:</strong> Zeige deinen Arbeitsfortschritt mit aussagekräftigen Bildern</li>
+                    </ul>
+                </div>
+
+                <table class="evaluation-table">
+                    <thead>
+                        <tr>
+                            <th>Kriterium</th>
+                            <th>Beschreibung</th>
+                            <th class="points-1">1 Pt.</th>
+                            <th class="points-2">2 Pt.</th>
+                            <th class="points-3">3 Pt.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="criteria">📝 Vollständigkeit</td>
+                            <td class="description">Jede Werkstunde dokumentiert</td>
+                            <td class="points points-1">< 50%</td>
+                            <td class="points points-2">50-80%</td>
+                            <td class="points points-3">> 80%</td>
+                        </tr>
+                        <tr>
+                            <td class="criteria">💭 Reflexion</td>
+                            <td class="description">Durchdachte Beschreibungen</td>
+                            <td class="points points-1">Oberflächlich</td>
+                            <td class="points points-2">Grundlegend</td>
+                            <td class="points points-3">Detailliert</td>
+                        </tr>
+                        <tr>
+                            <td class="criteria">📸 Fotos</td>
+                            <td class="description">Aussagekräftige Bilder</td>
+                            <td class="points points-1">Wenige/unklar</td>
+                            <td class="points points-2">Vorhanden</td>
+                            <td class="points points-3">Sehr gut</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 12px; margin: 15px 0; text-align: center; font-size: 14px;">
+                    <strong>💡 Tipp:</strong> Schreibe ehrlich und ausführlich! Auch Fehler sind wichtige Lernerfahrungen.
+                </div>
+
+                <button class="close-evaluation" id="closeEvalBtn">
+                    ✅ Verstanden - Weiter zum Arbeitseintrag
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentPage = 0;
+        let maxPages = 25;
+        let pages = [];
+        let studentInfo = {};
+
+        // Image compression function
+        function compressImage(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob(function(blob) {
+                            const reader = new FileReader();
+                            reader.onloadend = function() {
+                                resolve(reader.result);
+                            };
+                            reader.readAsDataURL(blob);
+                        }, 'image/jpeg', quality);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Show evaluation popup
+        function showEvaluationPopup() {
+            console.log('Showing evaluation popup');
+            document.getElementById('evaluationPopup').style.display = 'flex';
+        }
+
+        function closeEvaluationPopup() {
+            console.log('Closing evaluation popup');
+            document.getElementById('evaluationPopup').style.display = 'none';
+        }
+
+        // Initialize
+        function init() {
+            // Try to load existing data from localStorage
+            try {
+                const savedData = localStorage.getItem('arbeitsberichtData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    pages = data.pages || [];
+                    studentInfo = data.studentInfo || {};
+                    currentPage = data.currentPage || 0;
+                    
+                    // Restore student info if available
+                    if (studentInfo.firstName) {
+                        document.getElementById('firstName').value = studentInfo.firstName;
+                        document.getElementById('lastName').value = studentInfo.lastName;
+                        document.getElementById('className').value = studentInfo.className;
+                        
+                        // Lock student info if data exists
+                        document.getElementById('firstName').disabled = true;
+                        document.getElementById('lastName').disabled = true;
+                        document.getElementById('className').disabled = true;
+                    }
+                }
+            } catch (e) {
+                console.log('LocalStorage error:', e);
+                alert('Achtung: Deine Daten können nicht gespeichert werden. Bitte überprüfe die Safari-Einstellungen.');
+            }
+
+            // Initialize empty pages array if not loaded
+            if (pages.length === 0) {
+                for (let i = 0; i < maxPages; i++) {
+                    pages[i] = {
+                        date: null,
+                        workDescription: '',
+                        toolsUsed: '',
+                        newExperiences: '',
+                        improvements: '',
+                        photo: null,
+                        saved: false,
+                        locked: false
+                    };
+                }
+            }
+            
+            updatePageDisplay();
+            updateNavigation();
+            updateEditingState();
+            
+            // Show evaluation popup on startup
+            showEvaluationPopup();
+        }
+
+        // Save data to localStorage with error handling
+        function saveToLocalStorage() {
+            try {
+                const dataToSave = {
+                    pages: pages,
+                    studentInfo: studentInfo,
+                    currentPage: currentPage,
+                    lastSaved: new Date().toISOString()
+                };
+                
+                // Try to save
+                localStorage.setItem('arbeitsberichtData', JSON.stringify(dataToSave));
+                console.log('Data saved to localStorage');
+                return true;
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+                if (e.name === 'QuotaExceededError') {
+                    alert('Speicherplatz voll! Bitte exportiere deine Daten und lösche alte Einträge.');
+                } else {
+                    alert('Fehler beim Speichern. Bitte überprüfe deine Safari-Einstellungen.');
+                }
+                return false;
+            }
+        }
+
+        function updateCharCounter(textareaId, counterId) {
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            const current = textarea.value.length;
+            const max = textarea.maxLength;
+            counter.textContent = current + '/' + max + ' Zeichen';
+            
+            if (current > max * 0.9) {
+                counter.style.color = '#e74c3c';
+            } else {
+                counter.style.color = '#666';
+            }
+        }
+
+        function createNewPage() {
+            console.log('createNewPage called');
+            
+            // Save current student info
+            studentInfo = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                className: document.getElementById('className').value.trim()
+            };
+
+            if (!studentInfo.firstName || !studentInfo.lastName || !studentInfo.className) {
+                alert('Bitte fülle zuerst alle Schülerinformationen aus!');
+                return;
+            }
+
+            // Find first empty page
+            let emptyPageIndex = -1;
+            for (let i = 0; i < maxPages; i++) {
+                if (!pages[i].date) {
+                    emptyPageIndex = i;
+                    break;
+                }
+            }
+
+            if (emptyPageIndex === -1) {
+                alert('Maximale Seitenzahl (25) erreicht!');
+                return;
+            }
+
+            // Create new page with current date
+            pages[emptyPageIndex] = {
+                date: new Date().toISOString().split('T')[0],
+                workDescription: '',
+                toolsUsed: '',
+                newExperiences: '',
+                improvements: '',
+                photo: null,
+                saved: false,
+                locked: false
+            };
+
+            // Switch to new page
+            currentPage = emptyPageIndex;
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
+            updatePageDisplay();
+            updateNavigation();
+            enableEditing();
+
+            // Show evaluation popup when creating new page
+            showEvaluationPopup();
+
+            // Lock student info after first page
+            if (emptyPageIndex === 0) {
+                document.getElementById('firstName').disabled = true;
+                document.getElementById('lastName').disabled = true;
+                document.getElementById('className').disabled = true;
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 0) {
+                for (let i = currentPage - 1; i >= 0; i--) {
+                    if (pages[i].date) {
+                        currentPage = i;
+                        break;
+                    }
+                }
+                updatePageDisplay();
+                updateNavigation();
+                updateEditingState();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < maxPages - 1) {
+                for (let i = currentPage + 1; i < maxPages; i++) {
+                    if (pages[i].date) {
+                        currentPage = i;
+                        break;
+                    }
+                }
+                updatePageDisplay();
+                updateNavigation();
+                updateEditingState();
+            }
+        }
+
+        function updatePageDisplay() {
+            const currentPageData = pages[currentPage];
+            const pageNumber = getPageNumber(currentPage);
+            
+            document.getElementById('pageIndicator').textContent = 'Seite ' + pageNumber + ' von 25';
+            
+            if (currentPageData.date) {
+                const date = new Date(currentPageData.date);
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('currentDate').textContent = 
+                    '📅 ' + date.toLocaleDateString('de-DE', options);
+            } else {
+                document.getElementById('currentDate').textContent = 
+                    '📅 Datum wird beim Erstellen einer neuen Seite gesetzt';
+            }
+
+            // Load page content
+            document.getElementById('workDescription').value = currentPageData.workDescription || '';
+            document.getElementById('toolsUsed').value = currentPageData.toolsUsed || '';
+            document.getElementById('newExperiences').value = currentPageData.newExperiences || '';
+            document.getElementById('improvements').value = currentPageData.improvements || '';
+
+            // Update character counters
+            updateCharCounter('workDescription', 'desc-counter');
+            updateCharCounter('toolsUsed', 'tools-counter');
+            updateCharCounter('newExperiences', 'exp-counter');
+            updateCharCounter('improvements', 'imp-counter');
+
+            // Handle photo
+            if (currentPageData.photo) {
+                document.getElementById('previewImage').src = currentPageData.photo;
+                document.getElementById('photoPreview').style.display = 'block';
+            } else {
+                document.getElementById('photoPreview').style.display = 'none';
+            }
+
+            // Update page status
+            updatePageStatus();
+        }
+
+        function getPageNumber(index) {
+            let count = 0;
+            for (let i = 0; i <= index; i++) {
+                if (pages[i].date) count++;
+            }
+            return count || 1;
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const newPageBtn = document.querySelector('.new-page-btn');
+
+            // Check if there are previous pages
+            let hasPrevious = false;
+            for (let i = currentPage - 1; i >= 0; i--) {
+                if (pages[i].date) {
+                    hasPrevious = true;
+                    break;
+                }
+            }
+
+            // Check if there are next pages
+            let hasNext = false;
+            for (let i = currentPage + 1; i < maxPages; i++) {
+                if (pages[i].date) {
+                    hasNext = true;
+                    break;
+                }
+            }
+
+            prevBtn.disabled = !hasPrevious;
+            nextBtn.disabled = !hasNext;
+
+            // Check if we can create new pages
+            let canCreateNew = false;
+            for (let i = 0; i < maxPages; i++) {
+                if (!pages[i].date) {
+                    canCreateNew = true;
+                    break;
+                }
+            }
+            newPageBtn.disabled = !canCreateNew;
+        }
+
+        function updateEditingState() {
+            const currentPageData = pages[currentPage];
+            
+            if (currentPageData.locked) {
+                disableEditing();
+            } else if (currentPageData.date) {
+                enableEditing();
+            } else {
+                disableEditing();
+            }
+        }
+
+        function enableEditing() {
+            document.getElementById('workDescription').disabled = false;
+            document.getElementById('toolsUsed').disabled = false;
+            document.getElementById('newExperiences').disabled = false;
+            document.getElementById('improvements').disabled = false;
+            document.getElementById('photoUpload').disabled = false;
+            document.querySelector('.photo-label').classList.remove('disabled');
+            const removeBtn = document.getElementById('removePhotoBtn');
+            if (removeBtn) removeBtn.disabled = false;
+            const prevBtn = document.getElementById('previewBtn');
+            if (prevBtn) prevBtn.disabled = false;
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) saveBtn.disabled = false;
+        }
+
+        function disableEditing() {
+            document.getElementById('workDescription').disabled = true;
+            document.getElementById('toolsUsed').disabled = true;
+            document.getElementById('newExperiences').disabled = true;
+            document.getElementById('improvements').disabled = true;
+            document.getElementById('photoUpload').disabled = true;
+            document.querySelector('.photo-label').classList.add('disabled');
+            const removeBtn = document.getElementById('removePhotoBtn');
+            if (removeBtn) removeBtn.disabled = true;
+            const prevBtn = document.getElementById('previewBtn');
+            if (prevBtn) prevBtn.disabled = true;
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) saveBtn.disabled = true;
+        }
+
+        function updatePageStatus() {
+            const currentPageData = pages[currentPage];
+            const statusDiv = document.getElementById('pageStatus');
+            
+            if (currentPageData.locked) {
+                statusDiv.innerHTML = '<div class="locked-indicator">🔒 Diese Seite ist gespeichert und kann nicht mehr bearbeitet werden</div>';
+            } else if (currentPageData.saved) {
+                statusDiv.innerHTML = '<div class="saved-indicator">✅ Seite gespeichert - du kannst noch Änderungen vornehmen</div>';
+            } else {
+                statusDiv.innerHTML = '';
+            }
+
+            // Update final save button
+            const finalSaveBtn = document.querySelector('.final-save-btn');
+            let allPagesSaved = true;
+            let hasPages = false;
+            
+            for (let i = 0; i < maxPages; i++) {
+                if (pages[i].date) {
+                    hasPages = true;
+                    if (!pages[i].saved) {
+                        allPagesSaved = false;
+                        break;
+                    }
+                }
+            }
+            
+            finalSaveBtn.disabled = !hasPages || !allPagesSaved;
+        }
+
+        async function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                try {
+                    // Compress image to reduce size
+                    const compressedImage = await compressImage(file, 800, 800, 0.7);
+                    document.getElementById('previewImage').src = compressedImage;
+                    document.getElementById('photoPreview').style.display = 'block';
+                } catch (error) {
+                    console.error('Error processing image:', error);
+                    alert('Fehler beim Verarbeiten des Bildes. Bitte versuche es erneut.');
+                }
+            }
+        }
+
+        function removePhoto() {
+            document.getElementById('photoUpload').value = '';
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('previewImage').src = '';
+        }
+
+        function validateCurrentPage() {
+            const currentPageData = pages[currentPage];
+            
+            if (!currentPageData || !currentPageData.date) {
+                alert('Bitte erstelle zuerst eine neue Seite.');
+                return false;
+            }
+
+            const description = document.getElementById('workDescription').value.trim();
+            const tools = document.getElementById('toolsUsed').value.trim();
+
+            if (!description) {
+                alert('Bitte beschreibe, was du heute gemacht hast.');
+                return false;
+            }
+
+            if (!tools) {
+                alert('Bitte gib die verwendeten Werkzeuge/Maschinen an.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function saveCurrentPage() {
+            if (!validateCurrentPage()) return;
+
+            const currentPageData = pages[currentPage];
+            
+            // Save current form data to page
+            currentPageData.workDescription = document.getElementById('workDescription').value;
+            currentPageData.toolsUsed = document.getElementById('toolsUsed').value;
+            currentPageData.newExperiences = document.getElementById('newExperiences').value;
+            currentPageData.improvements = document.getElementById('improvements').value;
+            
+            const previewImage = document.getElementById('previewImage');
+            if (previewImage.src && previewImage.src !== window.location.href) {
+                currentPageData.photo = previewImage.src;
+            }
+            
+            currentPageData.saved = true;
+            currentPageData.locked = true;
+
+            // Save to localStorage
+            if (saveToLocalStorage()) {
+                // Update UI
+                updatePageStatus();
+                disableEditing();
+                alert('✅ Seite wurde gespeichert und ist jetzt gesperrt!');
+            }
+        }
+
+        function previewCurrentPage() {
+            if (!validateCurrentPage()) return;
+
+            const currentPageData = pages[currentPage];
+            const data = {
+                date: currentPageData.date,
+                description: document.getElementById('workDescription').value,
+                tools: document.getElementById('toolsUsed').value,
+                experiences: document.getElementById('newExperiences').value,
+                improvements: document.getElementById('improvements').value,
+                photo: document.getElementById('previewImage').src
+            };
+
+            const date = new Date(data.date);
+            let previewHTML = `
+                <!DOCTYPE html>
+                <html lang="de">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Arbeitsbericht Vorschau</title>
+                    <style>
+                        body { 
+                            font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; 
+                            max-width: 800px; 
+                            margin: 20px auto; 
+                            padding: 20px;
+                            line-height: 1.6;
+                        }
+                        h2 { 
+                            color: #2c3e50; 
+                            border-bottom: 2px solid #667eea; 
+                            padding-bottom: 10px; 
+                        }
+                        h3 { 
+                            color: #34495e; 
+                            margin-top: 20px; 
+                        }
+                        p { 
+                            margin-bottom: 15px; 
+                            white-space: pre-wrap;
+                        }
+                        img {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 8px;
+                            margin-top: 10px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>Arbeitsbericht vom ${date.toLocaleDateString('de-DE')}</h2>
+                    <h3>Was habe ich heute gemacht?</h3>
+                    <p>${data.description}</p>
+                    <h3>Welche Werkzeuge/Maschinen habe ich verwendet?</h3>
+                    <p>${data.tools}</p>
+                    <h3>Was war neu für mich? Welche Erfahrungen habe ich gemacht?</h3>
+                    <p>${data.experiences}</p>
+                    <h3>Was hätte ich anders oder besser machen können?</h3>
+                    <p>${data.improvements}</p>
+            `;
+
+            if (data.photo && data.photo !== window.location.href) {
+                previewHTML += `<h3>Foto</h3><img src="${data.photo}" alt="Projektfoto">`;
+            }
+
+            previewHTML += '</body></html>';
+
+            const previewWindow = window.open('', '_blank');
+            if (previewWindow) {
+                previewWindow.document.write(previewHTML);
+                previewWindow.document.close();
+            } else {
+                alert('Pop-up Fenster wurden blockiert. Bitte erlaube Pop-ups für diese Seite.');
+            }
+        }
+
+        function finalSaveAndDownload() {
+            // Generate text content
+            let textContent = 'ARBEITSBERICHT WERKEN\n';
+            textContent += studentInfo.firstName + ' ' + studentInfo.lastName + ' - Klasse ' + studentInfo.className + '\n\n';
+            textContent += 'Generiert am: ' + new Date().toLocaleString('de-DE') + '\n\n';
+
+            let pageCount = 0;
+            for (let i = 0; i < maxPages; i++) {
+                if (pages[i].date && pages[i].saved) {
+                    pageCount++;
+                    const date = new Date(pages[i].date);
+                    textContent += '\n==========================================\n';
+                    textContent += 'SEITE ' + pageCount + ' - ' + date.toLocaleDateString('de-DE') + '\n';
+                    textContent += '==========================================\n\n';
+                    textContent += 'Was habe ich heute gemacht?\n' + pages[i].workDescription + '\n\n';
+                    textContent += 'Welche Werkzeuge/Maschinen habe ich verwendet?\n' + pages[i].toolsUsed + '\n\n';
+                    textContent += 'Was war neu für mich? Welche Erfahrungen habe ich gemacht?\n' + pages[i].newExperiences + '\n\n';
+                    textContent += 'Was hätte ich anders oder besser machen können?\n' + pages[i].improvements + '\n\n';
+                    textContent += (pages[i].photo ? '[FOTO VORHANDEN]' : '[KEIN FOTO]') + '\n\n';
+                }
+            }
+
+            const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '.txt';
+
+            // Create and download file
+            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            
+            // Trigger download
+            a.click();
+            
+            // Cleanup
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            alert('✅ Arbeitsbericht wurde heruntergeladen!\n\nDateiname: ' + fileName + '\nInsgesamt ' + pageCount + ' Seiten gespeichert.\n\nDu findest die Datei in deinem Download-Ordner.');
+        }
+
+        // Bind event listeners
+        function bindEventListeners() {
+            // Navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const newPageBtn = document.getElementById('newPageBtn');
+            const previewBtn = document.getElementById('previewBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const finalSaveBtn = document.getElementById('finalSaveBtn');
+            const closeEvalBtn = document.getElementById('closeEvalBtn');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+            
+            // Add touch and click events
+            if (prevBtn) {
+                prevBtn.addEventListener('click', previousPage);
+                prevBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    previousPage();
+                });
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', nextPage);
+                nextBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    nextPage();
+                });
+            }
+            
+            if (newPageBtn) {
+                newPageBtn.addEventListener('click', createNewPage);
+                newPageBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    createNewPage();
+                });
+            }
+            
+            if (previewBtn) {
+                previewBtn.addEventListener('click', previewCurrentPage);
+                previewBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    previewCurrentPage();
+                });
+            }
+            
+            if (saveBtn) {
+                saveBtn.addEventListener('click', saveCurrentPage);
+                saveBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    saveCurrentPage();
+                });
+            }
+            
+            if (finalSaveBtn) {
+                finalSaveBtn.addEventListener('click', finalSaveAndDownload);
+                finalSaveBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    finalSaveAndDownload();
+                });
+            }
+            
+            if (closeEvalBtn) {
+                closeEvalBtn.addEventListener('click', closeEvaluationPopup);
+                closeEvalBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    closeEvaluationPopup();
+                });
+            }
+            
+            if (removePhotoBtn) {
+                removePhotoBtn.addEventListener('click', removePhoto);
+                removePhotoBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    removePhoto();
+                });
+            }
+            
+            // Debug log
+            console.log('Event listeners bound successfully');
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            console.log('Page loaded, initializing...');
+            init();
+            bindEventListeners();
+        });
+        
+        // Also try DOMContentLoaded as fallback
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM ready, binding events...');
+            bindEventListeners();
+        });
+
+        // Prevent iOS bounce scrolling
+        document.addEventListener('touchmove', function(e) {
+            if (e.target.closest('.evaluation-content') || e.target.closest('.evaluation-table')) {
+                return;
+            }
+            if (e.scale !== 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
