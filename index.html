@@ -766,7 +766,10 @@
                     </button>
                     <br>
                     <button type="button" class="submit-btn final-save-btn" id="finalSaveBtn" disabled>
-                        📄 Komplettes PDF erstellen
+                        📄 Als Text exportieren (ohne Fotos)
+                    </button>
+                    <button type="button" class="submit-btn final-save-btn" id="htmlExportBtn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);" disabled>
+                        🖼️ Als HTML exportieren (mit Fotos)
                     </button>
                 </div>
             </div>
@@ -1246,6 +1249,12 @@
             }
             
             finalSaveBtn.disabled = !hasPages || !allPagesSaved;
+            
+            // Update HTML export button
+            const htmlExportBtn = document.getElementById('htmlExportBtn');
+            if (htmlExportBtn) {
+                htmlExportBtn.disabled = !hasPages || !allPagesSaved;
+            }
         }
 
         async function handlePhotoUpload(event) {
@@ -1525,6 +1534,11 @@
                 finalSaveBtn.addEventListener('click', finalSaveAndDownload);
             }
             
+            const htmlExportBtn = document.getElementById('htmlExportBtn');
+            if (htmlExportBtn) {
+                htmlExportBtn.addEventListener('click', exportAsHTML);
+            }
+            
             if (closeEvalBtn) {
                 closeEvalBtn.addEventListener('click', closeEvaluationPopup);
             }
@@ -1559,6 +1573,206 @@
             }
         }
 
+        // Export as HTML with embedded images
+        function exportAsHTML() {
+            // Create HTML document
+            let htmlContent = `<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arbeitsbericht - ${studentInfo.firstName} ${studentInfo.lastName}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2c3e50;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            color: #666;
+            font-size: 18px;
+        }
+        .page {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            page-break-inside: avoid;
+        }
+        .page-header {
+            color: #2c3e50;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .question-title {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+        .answer {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .photo {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .photo img {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .no-photo {
+            background: #e0e0e0;
+            padding: 40px;
+            text-align: center;
+            color: #999;
+            border-radius: 8px;
+            font-style: italic;
+        }
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .page { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Arbeitsbericht Werken</h1>
+            <p class="student-info">${studentInfo.firstName} ${studentInfo.lastName} - Klasse ${studentInfo.className}</p>
+            <p>Erstellt am: ${new Date().toLocaleDateString('de-DE')}</p>
+        </div>
+`;
+
+            // Add each page
+            let pageCount = 0;
+            for (let i = 0; i < maxPages; i++) {
+                if (pages[i].date && pages[i].saved) {
+                    pageCount++;
+                    const date = new Date(pages[i].date);
+                    
+                    htmlContent += `
+        <div class="page">
+            <div class="page-header">
+                Seite ${pageCount} - ${date.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            </div>
+            
+            <div class="question">
+                <div class="question-title">🔨 Was habe ich heute gemacht?</div>
+                <div class="answer">${pages[i].workDescription || 'Keine Angabe'}</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-title">🔧 Welche Werkzeuge/Maschinen habe ich verwendet?</div>
+                <div class="answer">${pages[i].toolsUsed || 'Keine Angabe'}</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-title">✨ Was war neu für mich? Welche Erfahrungen habe ich gemacht?</div>
+                <div class="answer">${pages[i].newExperiences || 'Keine Angabe'}</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-title">💡 Was hätte ich anders oder besser machen können?</div>
+                <div class="answer">${pages[i].improvements || 'Keine Angabe'}</div>
+            </div>
+            
+            <div class="photo">
+                <div class="question-title">📷 Foto vom Projektstand</div>
+                ${pages[i].photo ? 
+                    `<img src="${pages[i].photo}" alt="Projektfoto Seite ${pageCount}">` : 
+                    '<div class="no-photo">Kein Foto vorhanden</div>'
+                }
+            </div>
+        </div>`;
+                }
+            }
+
+            htmlContent += `
+    </div>
+</body>
+</html>`;
+
+            const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '_komplett.html';
+            
+            // Create file
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            
+            // Try native sharing first
+            if (navigator.share) {
+                const file = new File([blob], fileName, { type: 'text/html' });
+                
+                navigator.share({
+                    title: 'Arbeitsbericht mit Fotos',
+                    text: 'Vollständiger Arbeitsbericht mit ' + pageCount + ' Seiten und Fotos',
+                    files: [file]
+                }).then(() => {
+                    console.log('HTML file shared successfully');
+                }).catch((error) => {
+                    console.log('Share failed, falling back to download:', error);
+                    downloadHTMLFile(blob, fileName, pageCount);
+                });
+            } else {
+                downloadHTMLFile(blob, fileName, pageCount);
+            }
+        }
+        
+        function downloadHTMLFile(blob, fileName, pageCount) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            alert('🎨 HTML-Bericht mit Fotos erstellt!\n\n' + 
+                  'Name: ' + fileName + '\n' +
+                  'Seiten: ' + pageCount + ' (mit Fotos!)\n\n' +
+                  '🔍 So öffnest du die Datei:\n' +
+                  '1. Safari → Downloads\n' +
+                  '2. Datei antippen → öffnet im Browser\n' +
+                  '3. Kann gedruckt oder geteilt werden\n\n' +
+                  '💡 Tipp: Diese Datei enthält alle Fotos!');
+        }
+        
         // Initialize on page load
         window.addEventListener('load', function() {
             console.log('Page loaded, initializing...');
