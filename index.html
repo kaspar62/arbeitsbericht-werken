@@ -1422,8 +1422,32 @@
 
             const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '.txt';
 
-            // Create and download file
+            // Create file
             const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            
+            // Try native Web Share API first (works better on iPad)
+            if (navigator.share) {
+                // Create file for sharing
+                const file = new File([blob], fileName, { type: 'text/plain' });
+                
+                navigator.share({
+                    title: 'Arbeitsbericht Werken',
+                    text: 'Mein Arbeitsbericht mit ' + pageCount + ' Seiten',
+                    files: [file]
+                }).then(() => {
+                    console.log('File shared successfully');
+                }).catch((error) => {
+                    console.log('Share failed, falling back to download:', error);
+                    // Fallback to download
+                    downloadFileTraditional(blob, fileName, pageCount);
+                });
+            } else {
+                // Fallback for browsers without Web Share API
+                downloadFileTraditional(blob, fileName, pageCount);
+            }
+        }
+        
+        function downloadFileTraditional(blob, fileName, pageCount) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -1440,7 +1464,20 @@
                 URL.revokeObjectURL(url);
             }, 100);
             
-            alert('✅ Arbeitsbericht erstellt!\n\nDateiname: ' + fileName + '\nInsgesamt ' + pageCount + ' Seiten gespeichert.\n\n📱 iPad: Datei wird in Safari Downloads gespeichert\n📁 Zu finden in: Dateien-App → Downloads\n\n💡 Tipp: Teile die Datei direkt per AirDrop oder E-Mail!');
+            // Better message for iPad users
+            const userAgent = navigator.userAgent;
+            if (userAgent.includes('iPad') || userAgent.includes('iPhone')) {
+                alert('📄 Arbeitsbericht erstellt!\n\n' + 
+                      'Name: ' + fileName + '\n' +
+                      'Seiten: ' + pageCount + '\n\n' +
+                      '🔍 So findest du die Datei:\n' +
+                      '1. Safari → Downloads-Symbol (⬇️)\n' +
+                      '2. Oder: Dateien-App → "Auf meinem iPad" → Downloads\n\n' +
+                      '📤 Zum Teilen:\n' +
+                      'Lange auf Datei drücken → Teilen → AirDrop/E-Mail');
+            } else {
+                alert('✅ Arbeitsbericht wurde heruntergeladen!\n\nDateiname: ' + fileName + '\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
+            }
         }
 
         // Track if events are already bound
