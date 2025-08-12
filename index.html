@@ -2,72 +2,58 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arbeitsbericht Werken</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 10px;
-            -webkit-font-smoothing: antialiased;
-            touch-action: pan-y;
+            padding: 20px;
         }
 
         .container {
             max-width: 900px;
-            width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-        
-        /* iPad specific centering */
-        @media (min-width: 768px) {
-            .container {
-                width: 90%;
-                max-width: 800px;
-            }
-        }
 
         .header {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             color: white;
-            padding: 20px;
+            padding: 30px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 1.8em;
+            font-size: 2.2em;
             margin-bottom: 10px;
             font-weight: 300;
         }
 
         .header p {
             opacity: 0.9;
-            font-size: 1em;
+            font-size: 1.1em;
         }
 
         .student-info {
-            padding: 15px 20px;
+            padding: 20px 40px;
             background: #f8f9fa;
             border-bottom: 1px solid #e0e0e0;
         }
 
         .student-input {
-            display: block;
-            margin: 10px 0;
+            display: inline-block;
+            margin: 0 20px 10px 0;
         }
 
         .student-input label {
@@ -75,17 +61,14 @@
             font-weight: 600;
             margin-bottom: 5px;
             color: #2c3e50;
-            font-size: 14px;
         }
 
         .student-input input {
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #e0e0e0;
             border-radius: 5px;
-            font-size: 16px;
-            width: 100%;
-            -webkit-appearance: none;
-            appearance: none;
+            font-size: 14px;
+            width: 150px;
         }
 
         .student-input input:focus {
@@ -94,55 +77,49 @@
         }
 
         .page-navigation {
-            padding: 15px 20px;
+            padding: 20px 40px;
             background: #fff;
             border-bottom: 1px solid #e0e0e0;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .page-info {
             font-size: 16px;
             color: #2c3e50;
             font-weight: 600;
-            text-align: center;
         }
 
         .nav-buttons {
             display: flex;
             gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
         }
 
         .nav-btn {
-            padding: 12px 20px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            font-size: 14px;
-            -webkit-appearance: none;
-            appearance: none;
-            touch-action: manipulation;
         }
 
         .new-page-btn {
             background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
             color: white;
-            flex: 1 1 auto;
         }
 
-        .new-page-btn:active {
-            transform: scale(0.98);
+        .new-page-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
         }
 
         .new-page-btn:disabled {
             background: #bdc3c7;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .prev-btn, .next-btn {
@@ -150,7 +127,7 @@
             color: white;
         }
 
-        .prev-btn:active, .next-btn:active {
+        .prev-btn:hover, .next-btn:hover {
             background: #5a6fd8;
         }
 
@@ -160,59 +137,63 @@
         }
 
         .form-container {
-            padding: 20px;
+            padding: 40px;
         }
 
         .date-section {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-align: center;
-            padding: 15px;
+            padding: 20px;
             background: #f0f8ff;
             border-radius: 10px;
             border: 2px solid #667eea;
         }
 
         .date-display {
-            font-size: 1.2em;
+            font-size: 1.5em;
             font-weight: 600;
             color: #2c3e50;
         }
 
         .question-section {
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             background: #f8f9fa;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .question-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
 
         .question-title {
-            font-size: 1.1em;
+            font-size: 1.2em;
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
 
         .question-icon {
-            margin-right: 8px;
-            font-size: 1.2em;
+            margin-right: 10px;
+            font-size: 1.3em;
         }
 
         .text-input {
             width: 100%;
             min-height: 80px;
-            padding: 12px;
+            padding: 15px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-family: inherit;
             resize: vertical;
             transition: all 0.3s ease;
             background: white;
-            -webkit-appearance: none;
-            appearance: none;
         }
 
         .text-input:focus {
@@ -225,17 +206,21 @@
             background: #f5f5f5;
             color: #666;
             cursor: not-allowed;
-            -webkit-text-fill-color: #666;
-            opacity: 1;
         }
 
         .photo-section {
             background: #f0f8ff;
             border: 2px dashed #667eea;
             border-radius: 12px;
-            padding: 20px;
+            padding: 30px;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .photo-section:hover {
+            background: #e6f3ff;
+            border-color: #5a6fd8;
         }
 
         .photo-upload {
@@ -251,23 +236,23 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            margin-bottom: 10px;
-            -webkit-appearance: none;
-            touch-action: manipulation;
+            margin-bottom: 15px;
         }
 
-        .photo-label:active {
-            transform: scale(0.98);
+        .photo-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .photo-label.disabled {
             background: #bdc3c7;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .photo-preview {
-            margin-top: 15px;
+            margin-top: 20px;
             display: none;
         }
 
@@ -280,19 +265,16 @@
 
         .remove-photo {
             margin-top: 10px;
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: #e74c3c;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 14px;
-            -webkit-appearance: none;
-            touch-action: manipulation;
         }
 
-        .remove-photo:active {
+        .remove-photo:hover {
             background: #c0392b;
         }
 
@@ -303,13 +285,13 @@
 
         .submit-section {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 40px;
+            padding-top: 30px;
             border-top: 2px solid #e0e0e0;
         }
 
         .submit-btn {
-            padding: 15px 30px;
+            padding: 15px 40px;
             background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
             color: white;
             border: none;
@@ -318,31 +300,38 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 5px;
-            -webkit-appearance: none;
-            touch-action: manipulation;
+            margin: 0 10px;
         }
 
-        .submit-btn:active {
-            transform: scale(0.98);
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
         }
 
         .submit-btn:disabled {
             background: #bdc3c7;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .preview-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
+        .preview-btn:hover {
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
         .final-save-btn {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            font-size: 16px;
-            padding: 18px 40px;
-            margin-top: 15px;
-            width: 90%;
+            font-size: 18px;
+            padding: 20px 50px;
+            margin-top: 20px;
+        }
+
+        .final-save-btn:hover {
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
         }
 
         .char-counter {
@@ -383,82 +372,50 @@
             background: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             z-index: 10000;
-            padding: 10px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         .evaluation-content {
             background: white;
             border-radius: 15px;
-            padding: 15px;
-            max-width: 95vw;
-            width: 100%;
-            margin: 20px auto;
-            max-height: none;
-            overflow-y: visible;
+            padding: 30px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-        
-        @media (min-width: 768px) {
-            .evaluation-content {
-                max-width: 90%;
-                width: auto;
-                min-width: 700px;
-                padding: 25px;
-            }
         }
 
         .evaluation-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             color: #2c3e50;
         }
 
         .evaluation-header h2 {
-            font-size: 1.5em;
+            font-size: 1.8em;
             margin-bottom: 10px;
         }
 
         .evaluation-header p {
             color: #7f8c8d;
-            font-size: 1em;
+            font-size: 1.1em;
         }
 
         .evaluation-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            font-size: 11px;
-            display: block;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        @media (min-width: 768px) {
-            .evaluation-table {
-                font-size: 13px;
-                display: table;
-            }
+            font-size: 14px;
         }
 
         .evaluation-table th,
         .evaluation-table td {
             border: 2px solid #34495e;
-            padding: 6px;
+            padding: 12px 8px;
             text-align: left;
             vertical-align: top;
-            min-width: 80px;
-        }
-        
-        @media (min-width: 768px) {
-            .evaluation-table th,
-            .evaluation-table td {
-                padding: 10px;
-                min-width: auto;
-            }
         }
 
         .evaluation-table th {
@@ -466,18 +423,18 @@
             color: white;
             font-weight: 600;
             text-align: center;
-            position: sticky;
-            top: 0;
         }
 
         .evaluation-table .criteria {
             background: #ecf0f1;
             font-weight: 600;
             color: #2c3e50;
+            width: 25%;
         }
 
         .evaluation-table .description {
             background: #f8f9fa;
+            width: 35%;
             font-style: italic;
         }
 
@@ -503,7 +460,6 @@
             color: #27ae60;
             margin-bottom: 10px;
             text-align: center;
-            font-size: 1.2em;
         }
 
         .evaluation-goals ul {
@@ -512,10 +468,9 @@
         }
 
         .evaluation-goals li {
-            padding: 8px 0;
+            padding: 5px 0;
             margin-left: 20px;
             position: relative;
-            font-size: 14px;
         }
 
         .evaluation-goals li:before {
@@ -528,9 +483,8 @@
 
         .close-evaluation {
             display: block;
-            width: 90%;
-            max-width: 300px;
-            margin: 20px auto 0;
+            width: 200px;
+            margin: 25px auto 0;
             padding: 15px 30px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -540,85 +494,41 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            -webkit-appearance: none;
-            touch-action: manipulation;
         }
 
-        .close-evaluation:active {
-            transform: scale(0.98);
+        .close-evaluation:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
-
-        /* iPad specific styles */
-        @media (max-width: 767px) {
-            body {
-                padding: 0;
-            }
-            
             .container {
-                border-radius: 0;
-                min-height: 100vh;
-                width: 100%;
+                margin: 10px;
+                border-radius: 10px;
             }
             
             .form-container {
-                padding: 15px;
+                padding: 20px;
             }
             
-            .question-section {
-                padding: 15px;
+            .header {
+                padding: 20px;
             }
             
-            .submit-btn {
-                width: 100%;
-                margin: 5px 0;
+            .header h1 {
+                font-size: 1.8em;
             }
-            
-            .evaluation-table {
-                width: 100%;
-                table-layout: fixed;
-            }
-            
-            .evaluation-table th:first-child,
-            .evaluation-table td:first-child {
-                width: 25%;
-            }
-            
-            .evaluation-table th:nth-child(2),
-            .evaluation-table td:nth-child(2) {
-                width: 35%;
-            }
-            
-            .evaluation-table th:nth-child(3),
-            .evaluation-table td:nth-child(3),
-            .evaluation-table th:nth-child(4),
-            .evaluation-table td:nth-child(4),
-            .evaluation-table th:nth-child(5),
-            .evaluation-table td:nth-child(5) {
-                width: 13%;
-            }
-            
-            .nav-buttons {
+
+            .page-navigation {
                 flex-direction: column;
+                gap: 15px;
             }
-            
-            .nav-btn {
+
+            .student-input {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .student-input input {
                 width: 100%;
-            }
-        }
-
-        /* Prevent iOS rubber band scrolling on iPhone only */
-        @media (max-width: 767px) {
-            html {
-                position: fixed;
-                height: 100%;
-                overflow: hidden;
-            }
-
-            body {
-                position: fixed;
-                height: 100%;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
             }
         }
     </style>
@@ -633,15 +543,15 @@
         <div class="student-info">
             <div class="student-input">
                 <label for="firstName">Vorname:</label>
-                <input type="text" id="firstName" placeholder="Max" required autocomplete="off">
+                <input type="text" id="firstName" placeholder="Max" required>
             </div>
             <div class="student-input">
                 <label for="lastName">Nachname:</label>
-                <input type="text" id="lastName" placeholder="Mustermann" required autocomplete="off">
+                <input type="text" id="lastName" placeholder="Mustermann" required>
             </div>
             <div class="student-input">
                 <label for="className">Klasse:</label>
-                <input type="text" id="className" placeholder="B26c" required autocomplete="off">
+                <input type="text" id="className" placeholder="B26c" required>
             </div>
         </div>
 
@@ -650,13 +560,13 @@
                 <span id="pageIndicator">Seite 1 von 25</span>
             </div>
             <div class="nav-buttons">
-                <button class="nav-btn prev-btn" id="prevBtn" disabled>
+                <button class="nav-btn prev-btn" onclick="previousPage()" disabled>
                     ← Vorherige
                 </button>
-                <button class="nav-btn next-btn" id="nextBtn" disabled>
+                <button class="nav-btn next-btn" onclick="nextPage()" disabled>
                     Nächste →
                 </button>
-                <button class="nav-btn new-page-btn" id="newPageBtn">
+                <button class="nav-btn new-page-btn" onclick="createNewPage()">
                     ➕ Neue Seite
                 </button>
             </div>
@@ -740,15 +650,15 @@
                         Foto vom Projektstand
                     </div>
                     <div class="photo-section">
-                        <input type="file" id="photoUpload" class="photo-upload" accept="image/*" capture="environment" onchange="handlePhotoUpload(event)" disabled>
+                        <input type="file" id="photoUpload" class="photo-upload" accept="image/*" onchange="handlePhotoUpload(event)" disabled>
                         <label for="photoUpload" class="photo-label disabled">
                             📷 Foto aufnehmen/hochladen
                         </label>
-                        <p style="color: #666; margin-top: 10px; font-size: 14px;">Zeige den aktuellen Stand deines Projekts</p>
+                        <p style="color: #666; margin-top: 10px;">Zeige den aktuellen Stand deines Projekts</p>
                         <div id="photoPreview" class="photo-preview">
                             <img id="previewImage" src="" alt="Projekt Foto">
                             <br>
-                            <button type="button" class="remove-photo" id="removePhotoBtn" disabled>
+                            <button type="button" class="remove-photo" onclick="removePhoto()" disabled>
                                 🗑️ Foto entfernen
                             </button>
                         </div>
@@ -758,18 +668,19 @@
                 <div id="pageStatus"></div>
 
                 <div class="submit-section">
-                    <button type="button" class="submit-btn preview-btn" id="previewBtn" disabled>
+                    <button type="button" class="submit-btn preview-btn" onclick="previewCurrentPage()" disabled>
                         👀 Seite Vorschau
                     </button>
-                    <button type="button" class="submit-btn" id="saveBtn" disabled>
+                    <button type="button" class="submit-btn" onclick="saveCurrentPage()" disabled>
                         💾 Seite speichern
                     </button>
                     <br>
-                    <button type="button" class="submit-btn final-save-btn" id="finalSaveBtn" disabled>
-                        📄 Als Text exportieren (ohne Fotos)
+                    <button type="button" class="submit-btn" onclick="createBackup()" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); margin-top: 15px;">
+                        📤 Zwischensicherung für Lehrer erstellen
                     </button>
-                    <button type="button" class="submit-btn final-save-btn" id="htmlExportBtn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);" disabled>
-                        🖼️ Als HTML exportieren (mit Fotos)
+                    <br>
+                    <button type="button" class="submit-btn final-save-btn" onclick="finalSaveAndDownload()" disabled>
+                        📄 Komplettes PDF erstellen und speichern
                     </button>
                 </div>
             </div>
@@ -795,43 +706,43 @@
                 <table class="evaluation-table">
                     <thead>
                         <tr>
-                            <th>Kriterium</th>
+                            <th>Bewertungskriterium</th>
                             <th>Beschreibung</th>
-                            <th class="points-1">1 Pt.</th>
-                            <th class="points-2">2 Pt.</th>
-                            <th class="points-3">3 Pt.</th>
+                            <th class="points-1">1 Punkt<br>ungenügend</th>
+                            <th class="points-2">2 Punkte<br>genügend</th>
+                            <th class="points-3">3 Punkte<br>gut</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="criteria">📝 Vollständigkeit</td>
-                            <td class="description">Jede Werkstunde dokumentiert</td>
-                            <td class="points points-1">< 50%</td>
-                            <td class="points points-2">50-80%</td>
-                            <td class="points points-3">> 80%</td>
+                            <td class="criteria">📝 Vollständigkeit der Einträge</td>
+                            <td class="description">Jede Werkstunde sollte dokumentiert werden mit allen wichtigen Arbeitsschritten</td>
+                            <td class="points points-1">Weniger als die Hälfte der Einträge gemacht</td>
+                            <td class="points points-2">Einträge sind meist da, aber haben teilweise Lücken</td>
+                            <td class="points points-3">Alle Einträge vollständig und regelmäßig gemacht</td>
                         </tr>
                         <tr>
-                            <td class="criteria">💭 Reflexion</td>
-                            <td class="description">Durchdachte Beschreibungen</td>
-                            <td class="points points-1">Oberflächlich</td>
-                            <td class="points points-2">Grundlegend</td>
-                            <td class="points points-3">Detailliert</td>
+                            <td class="criteria">💭 Qualität der Reflexion</td>
+                            <td class="description">Beschreibe deine Arbeit, Werkzeuge und deine Lernerfahrungen ausführlich und durchdacht</td>
+                            <td class="points points-1">Oberflächliche oder keine Reflexion</td>
+                            <td class="points points-2">Grundlegende Reflexion, aber noch oberflächlich</td>
+                            <td class="points points-3">Durchdachte, detaillierte und ehrliche Reflexion</td>
                         </tr>
                         <tr>
-                            <td class="criteria">📸 Fotos</td>
-                            <td class="description">Aussagekräftige Bilder</td>
-                            <td class="points points-1">Wenige/unklar</td>
-                            <td class="points points-2">Vorhanden</td>
-                            <td class="points points-3">Sehr gut</td>
+                            <td class="criteria">📸 Aussagekraft der Fotos</td>
+                            <td class="description">Fotos sollen deinen Arbeitsfortschritt gut zeigen und den Text sinnvoll ergänzen</td>
+                            <td class="points points-1">Wenige oder unklare Fotos</td>
+                            <td class="points points-2">Fotos vorhanden, aber nicht immer aussagekräftig</td>
+                            <td class="points points-3">Klare, gut gewählte Fotos die den Fortschritt zeigen</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 12px; margin: 15px 0; text-align: center; font-size: 14px;">
-                    <strong>💡 Tipp:</strong> Schreibe ehrlich und ausführlich! Auch Fehler sind wichtige Lernerfahrungen.
+                <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: center;">
+                    <strong>💡 Tipp:</strong> Schreibe ehrlich und ausführlich! Auch Fehler und Probleme sind wichtige Lernerfahrungen.
                 </div>
 
-                <button class="close-evaluation" id="closeEvalBtn">
+                <button class="close-evaluation" onclick="closeEvaluationPopup()">
                     ✅ Verstanden - Weiter zum Arbeitseintrag
                 </button>
             </div>
@@ -845,57 +756,12 @@
         let pages = [];
         let studentInfo = {};
 
-        // Image compression function
-        function compressImage(file, maxWidth, maxHeight, quality) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > maxWidth) {
-                                height *= maxWidth / width;
-                                width = maxWidth;
-                            }
-                        } else {
-                            if (height > maxHeight) {
-                                width *= maxHeight / height;
-                                height = maxHeight;
-                            }
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        canvas.toBlob(function(blob) {
-                            const reader = new FileReader();
-                            reader.onloadend = function() {
-                                resolve(reader.result);
-                            };
-                            reader.readAsDataURL(blob);
-                        }, 'image/jpeg', quality);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
         // Show evaluation popup
         function showEvaluationPopup() {
-            console.log('Showing evaluation popup');
             document.getElementById('evaluationPopup').style.display = 'flex';
         }
 
         function closeEvaluationPopup() {
-            console.log('Closing evaluation popup');
             document.getElementById('evaluationPopup').style.display = 'none';
         }
 
@@ -923,8 +789,7 @@
                     }
                 }
             } catch (e) {
-                console.log('LocalStorage error:', e);
-                alert('Achtung: Deine Daten können nicht gespeichert werden. Bitte überprüfe die Safari-Einstellungen.');
+                console.log('No saved data found, starting fresh');
             }
 
             // Initialize empty pages array if not loaded
@@ -951,7 +816,7 @@
             showEvaluationPopup();
         }
 
-        // Save data to localStorage with error handling
+        // Save data to localStorage whenever something changes
         function saveToLocalStorage() {
             try {
                 const dataToSave = {
@@ -960,19 +825,10 @@
                     currentPage: currentPage,
                     lastSaved: new Date().toISOString()
                 };
-                
-                // Try to save
                 localStorage.setItem('arbeitsberichtData', JSON.stringify(dataToSave));
                 console.log('Data saved to localStorage');
-                return true;
             } catch (e) {
                 console.error('Error saving to localStorage:', e);
-                if (e.name === 'QuotaExceededError') {
-                    alert('Speicherplatz voll! Bitte exportiere deine Daten und lösche alte Einträge.');
-                } else {
-                    alert('Fehler beim Speichern. Bitte überprüfe deine Safari-Einstellungen.');
-                }
-                return false;
             }
         }
 
@@ -990,28 +846,12 @@
             }
         }
 
-        // Safe wrapper to prevent double execution
-        function createNewPageSafe() {
-            console.log('createNewPageSafe called');
-            
-            // Check if there's an unsaved page
-            const currentPageData = pages[currentPage];
-            if (currentPageData.date && !currentPageData.saved) {
-                alert('Bitte speichere zuerst die aktuelle Seite, bevor du eine neue erstellst.');
-                return;
-            }
-            
-            createNewPage();
-        }
-        
         function createNewPage() {
-            console.log('createNewPage called');
-            
             // Save current student info
             studentInfo = {
-                firstName: document.getElementById('firstName').value.trim(),
-                lastName: document.getElementById('lastName').value.trim(),
-                className: document.getElementById('className').value.trim()
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                className: document.getElementById('className').value
             };
 
             if (!studentInfo.firstName || !studentInfo.lastName || !studentInfo.className) {
@@ -1102,19 +942,18 @@
             
             if (currentPageData.date) {
                 const date = new Date(currentPageData.date);
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 document.getElementById('currentDate').textContent = 
-                    '📅 ' + date.toLocaleDateString('de-DE', options);
+                    '📅 ' + date.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             } else {
                 document.getElementById('currentDate').textContent = 
                     '📅 Datum wird beim Erstellen einer neuen Seite gesetzt';
             }
 
             // Load page content
-            document.getElementById('workDescription').value = currentPageData.workDescription || '';
-            document.getElementById('toolsUsed').value = currentPageData.toolsUsed || '';
-            document.getElementById('newExperiences').value = currentPageData.newExperiences || '';
-            document.getElementById('improvements').value = currentPageData.improvements || '';
+            document.getElementById('workDescription').value = currentPageData.workDescription;
+            document.getElementById('toolsUsed').value = currentPageData.toolsUsed;
+            document.getElementById('newExperiences').value = currentPageData.newExperiences;
+            document.getElementById('improvements').value = currentPageData.improvements;
 
             // Update character counters
             updateCharCounter('workDescription', 'desc-counter');
@@ -1139,7 +978,7 @@
             for (let i = 0; i <= index; i++) {
                 if (pages[i].date) count++;
             }
-            return count || 1;
+            return count;
         }
 
         function updateNavigation() {
@@ -1198,12 +1037,10 @@
             document.getElementById('improvements').disabled = false;
             document.getElementById('photoUpload').disabled = false;
             document.querySelector('.photo-label').classList.remove('disabled');
-            const removeBtn = document.getElementById('removePhotoBtn');
-            if (removeBtn) removeBtn.disabled = false;
-            const prevBtn = document.getElementById('previewBtn');
-            if (prevBtn) prevBtn.disabled = false;
-            const saveBtn = document.getElementById('saveBtn');
-            if (saveBtn) saveBtn.disabled = false;
+            document.querySelector('.remove-photo').disabled = false;
+            const submitBtns = document.querySelectorAll('.submit-btn:not(.final-save-btn)');
+            document.querySelector('.preview-btn').disabled = false;
+            submitBtns.forEach(btn => btn.disabled = false);
         }
 
         function disableEditing() {
@@ -1213,12 +1050,9 @@
             document.getElementById('improvements').disabled = true;
             document.getElementById('photoUpload').disabled = true;
             document.querySelector('.photo-label').classList.add('disabled');
-            const removeBtn = document.getElementById('removePhotoBtn');
-            if (removeBtn) removeBtn.disabled = true;
-            const prevBtn = document.getElementById('previewBtn');
-            if (prevBtn) prevBtn.disabled = true;
-            const saveBtn = document.getElementById('saveBtn');
-            if (saveBtn) saveBtn.disabled = true;
+            document.querySelector('.remove-photo').disabled = true;
+            document.querySelector('.preview-btn').disabled = true;
+            document.querySelector('.submit-btn').disabled = true;
         }
 
         function updatePageStatus() {
@@ -1229,6 +1063,8 @@
                 statusDiv.innerHTML = '<div class="locked-indicator">🔒 Diese Seite ist gespeichert und kann nicht mehr bearbeitet werden</div>';
             } else if (currentPageData.saved) {
                 statusDiv.innerHTML = '<div class="saved-indicator">✅ Seite gespeichert - du kannst noch Änderungen vornehmen</div>';
+            } else if (currentPageData.date) {
+                statusDiv.innerHTML = '';
             } else {
                 statusDiv.innerHTML = '';
             }
@@ -1249,26 +1085,17 @@
             }
             
             finalSaveBtn.disabled = !hasPages || !allPagesSaved;
-            
-            // Update HTML export button
-            const htmlExportBtn = document.getElementById('htmlExportBtn');
-            if (htmlExportBtn) {
-                htmlExportBtn.disabled = !hasPages || !allPagesSaved;
-            }
         }
 
-        async function handlePhotoUpload(event) {
+        function handlePhotoUpload(event) {
             const file = event.target.files[0];
             if (file) {
-                try {
-                    // Compress image to reduce size
-                    const compressedImage = await compressImage(file, 800, 800, 0.7);
-                    document.getElementById('previewImage').src = compressedImage;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
                     document.getElementById('photoPreview').style.display = 'block';
-                } catch (error) {
-                    console.error('Error processing image:', error);
-                    alert('Fehler beim Verarbeiten des Bildes. Bitte versuche es erneut.');
-                }
+                };
+                reader.readAsDataURL(file);
             }
         }
 
@@ -1312,22 +1139,18 @@
             currentPageData.toolsUsed = document.getElementById('toolsUsed').value;
             currentPageData.newExperiences = document.getElementById('newExperiences').value;
             currentPageData.improvements = document.getElementById('improvements').value;
-            
-            const previewImage = document.getElementById('previewImage');
-            if (previewImage.src && previewImage.src !== window.location.href) {
-                currentPageData.photo = previewImage.src;
-            }
-            
+            currentPageData.photo = document.getElementById('previewImage').src;
             currentPageData.saved = true;
-            currentPageData.locked = true;
+            currentPageData.locked = true; // Lock after saving
 
             // Save to localStorage
-            if (saveToLocalStorage()) {
-                // Update UI
-                updatePageStatus();
-                disableEditing();
-                alert('✅ Seite wurde gespeichert und ist jetzt gesperrt!');
-            }
+            saveToLocalStorage();
+
+            // Update UI
+            updatePageStatus();
+            disableEditing();
+            
+            alert('✅ Seite wurde gespeichert und ist jetzt gesperrt!');
         }
 
         function previewCurrentPage() {
@@ -1343,465 +1166,91 @@
                 photo: document.getElementById('previewImage').src
             };
 
-            const date = new Date(data.date);
-            let previewHTML = `
-                <!DOCTYPE html>
-                <html lang="de">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Arbeitsbericht Vorschau</title>
-                    <style>
-                        body { 
-                            font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; 
-                            max-width: 800px; 
-                            margin: 20px auto; 
-                            padding: 20px;
-                            line-height: 1.6;
-                        }
-                        h2 { 
-                            color: #2c3e50; 
-                            border-bottom: 2px solid #667eea; 
-                            padding-bottom: 10px; 
-                        }
-                        h3 { 
-                            color: #34495e; 
-                            margin-top: 20px; 
-                        }
-                        p { 
-                            margin-bottom: 15px; 
-                            white-space: pre-wrap;
-                        }
-                        img {
-                            max-width: 100%;
-                            height: auto;
-                            border-radius: 8px;
-                            margin-top: 10px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2>Arbeitsbericht vom ${date.toLocaleDateString('de-DE')}</h2>
-                    <h3>Was habe ich heute gemacht?</h3>
-                    <p>${data.description}</p>
-                    <h3>Welche Werkzeuge/Maschinen habe ich verwendet?</h3>
-                    <p>${data.tools}</p>
-                    <h3>Was war neu für mich? Welche Erfahrungen habe ich gemacht?</h3>
-                    <p>${data.experiences}</p>
-                    <h3>Was hätte ich anders oder besser machen können?</h3>
-                    <p>${data.improvements}</p>
-            `;
+            let previewHTML = '<h2>Arbeitsbericht vom ' + new Date(data.date).toLocaleDateString('de-DE') + '</h2>';
+            previewHTML += '<h3>Was habe ich heute gemacht?</h3>';
+            previewHTML += '<p>' + data.description + '</p>';
+            previewHTML += '<h3>Welche Werkzeuge/Maschinen habe ich verwendet?</h3>';
+            previewHTML += '<p>' + data.tools + '</p>';
+            previewHTML += '<h3>Was war neu für mich? Welche Erfahrungen habe ich gemacht?</h3>';
+            previewHTML += '<p>' + data.experiences + '</p>';
+            previewHTML += '<h3>Was hätte ich anders oder besser machen können?</h3>';
+            previewHTML += '<p>' + data.improvements + '</p>';
 
-            if (data.photo && data.photo !== window.location.href) {
-                previewHTML += `<h3>Foto</h3><img src="${data.photo}" alt="Projektfoto">`;
+            if (data.photo) {
+                previewHTML += '<h3>Foto</h3><img src="' + data.photo + '" style="max-width: 400px; border-radius: 8px;">';
             }
-
-            previewHTML += '</body></html>';
 
             const previewWindow = window.open('', '_blank');
-            if (previewWindow) {
-                previewWindow.document.write(previewHTML);
-                previewWindow.document.close();
-            } else {
-                alert('Pop-up Fenster wurden blockiert. Bitte erlaube Pop-ups für diese Seite.');
-            }
+            previewWindow.document.write('<html><head><title>Arbeitsbericht Vorschau</title><style>body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; } h2 { color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom: 10px; } h3 { color: #34495e; margin-top: 20px; } p { line-height: 1.6; margin-bottom: 15px; }</style></head><body>' + previewHTML + '</body></html>');
         }
 
         function finalSaveAndDownload() {
-            // Generate text content
-            let textContent = 'ARBEITSBERICHT WERKEN\n';
-            textContent += studentInfo.firstName + ' ' + studentInfo.lastName + ' - Klasse ' + studentInfo.className + '\n\n';
-            textContent += 'Generiert am: ' + new Date().toLocaleString('de-DE') + '\n\n';
+            // Generate PDF content
+            let pdfContent = 'ARBEITSBERICHT WERKEN\n';
+            pdfContent += studentInfo.firstName + ' ' + studentInfo.lastName + ' - Klasse ' + studentInfo.className + '\n\n';
+            pdfContent += 'Generiert am: ' + new Date().toLocaleString('de-DE') + '\n\n';
 
             let pageCount = 0;
             for (let i = 0; i < maxPages; i++) {
                 if (pages[i].date && pages[i].saved) {
                     pageCount++;
                     const date = new Date(pages[i].date);
-                    textContent += '\n==========================================\n';
-                    textContent += 'SEITE ' + pageCount + ' - ' + date.toLocaleDateString('de-DE') + '\n';
-                    textContent += '==========================================\n\n';
-                    textContent += 'Was habe ich heute gemacht?\n' + pages[i].workDescription + '\n\n';
-                    textContent += 'Welche Werkzeuge/Maschinen habe ich verwendet?\n' + pages[i].toolsUsed + '\n\n';
-                    textContent += 'Was war neu für mich? Welche Erfahrungen habe ich gemacht?\n' + pages[i].newExperiences + '\n\n';
-                    textContent += 'Was hätte ich anders oder besser machen können?\n' + pages[i].improvements + '\n\n';
-                    textContent += (pages[i].photo ? '[FOTO VORHANDEN]' : '[KEIN FOTO]') + '\n\n';
+                    pdfContent += '\n==========================================\n';
+                    pdfContent += 'SEITE ' + pageCount + ' - ' + date.toLocaleDateString('de-DE') + '\n';
+                    pdfContent += '==========================================\n\n';
+                    pdfContent += 'Was habe ich heute gemacht?\n' + pages[i].workDescription + '\n\n';
+                    pdfContent += 'Welche Werkzeuge/Maschinen habe ich verwendet?\n' + pages[i].toolsUsed + '\n\n';
+                    pdfContent += 'Was war neu für mich? Welche Erfahrungen habe ich gemacht?\n' + pages[i].newExperiences + '\n\n';
+                    pdfContent += 'Was hätte ich anders oder besser machen können?\n' + pages[i].improvements + '\n\n';
+                    pdfContent += (pages[i].photo ? '[FOTO VORHANDEN]' : '[KEIN FOTO]') + '\n\n';
                 }
             }
 
             const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '.txt';
 
-            // Create file
-            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            // Create downloadable file with "Save As" dialog
+            const blob = new Blob([pdfContent], { type: 'text/plain;charset=utf-8' });
             
-            // Try native Web Share API first (works better on iPad)
-            if (navigator.share) {
-                // Create file for sharing
-                const file = new File([blob], fileName, { type: 'text/plain' });
-                
-                navigator.share({
-                    title: 'Arbeitsbericht Werken',
-                    text: 'Mein Arbeitsbericht mit ' + pageCount + ' Seiten',
-                    files: [file]
-                }).then(() => {
-                    console.log('File shared successfully');
-                }).catch((error) => {
-                    console.log('Share failed, falling back to download:', error);
-                    // Fallback to download
-                    downloadFileTraditional(blob, fileName, pageCount);
-                });
-            } else {
-                // Fallback for browsers without Web Share API
-                downloadFileTraditional(blob, fileName, pageCount);
-            }
-        }
-        
-        function downloadFileTraditional(blob, fileName, pageCount) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            
-            // Trigger download
-            a.click();
-            
-            // Cleanup
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-            
-            // Better message for iPad users
-            const userAgent = navigator.userAgent;
-            if (userAgent.includes('iPad') || userAgent.includes('iPhone')) {
-                alert('📄 Arbeitsbericht erstellt!\n\n' + 
-                      'Name: ' + fileName + '\n' +
-                      'Seiten: ' + pageCount + '\n\n' +
-                      '🔍 So findest du die Datei:\n' +
-                      '1. Safari → Downloads-Symbol (⬇️)\n' +
-                      '2. Oder: Dateien-App → "Auf meinem iPad" → Downloads\n\n' +
-                      '📤 Zum Teilen:\n' +
-                      'Lange auf Datei drücken → Teilen → AirDrop/E-Mail');
-            } else {
-                alert('✅ Arbeitsbericht wurde heruntergeladen!\n\nDateiname: ' + fileName + '\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
-            }
-        }
-
-        // Track if events are already bound
-        let eventsBound = false;
-        
-        // Bind event listeners
-        function bindEventListeners() {
-            if (eventsBound) {
-                console.log('Events already bound, skipping');
-                return;
-            }
-            
-            // Navigation buttons
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const newPageBtn = document.getElementById('newPageBtn');
-            const previewBtn = document.getElementById('previewBtn');
-            const saveBtn = document.getElementById('saveBtn');
-            const finalSaveBtn = document.getElementById('finalSaveBtn');
-            const closeEvalBtn = document.getElementById('closeEvalBtn');
-            const removePhotoBtn = document.getElementById('removePhotoBtn');
-            
-            // Add only click events (no duplicate touch events)
-            if (prevBtn) {
-                prevBtn.addEventListener('click', previousPage);
-            }
-            
-            if (nextBtn) {
-                nextBtn.addEventListener('click', nextPage);
-            }
-            
-            if (newPageBtn) {
-                newPageBtn.addEventListener('click', createNewPageSafe);
-            }
-            
-            if (previewBtn) {
-                previewBtn.addEventListener('click', previewCurrentPage);
-            }
-            
-            if (saveBtn) {
-                saveBtn.addEventListener('click', saveCurrentPage);
-            }
-            
-            if (finalSaveBtn) {
-                finalSaveBtn.addEventListener('click', finalSaveAndDownload);
-            }
-            
-            const htmlExportBtn = document.getElementById('htmlExportBtn');
-            if (htmlExportBtn) {
-                htmlExportBtn.addEventListener('click', exportAsHTML);
-            }
-            
-            if (closeEvalBtn) {
-                closeEvalBtn.addEventListener('click', closeEvaluationPopup);
-            }
-            
-            if (removePhotoBtn) {
-                removePhotoBtn.addEventListener('click', removePhoto);
-            }
-            
-            eventsBound = true;
-            console.log('Event listeners bound successfully');
-        }
-
-        // Clear PWA cache function
-        function clearPWACache() {
-            if ('caches' in window) {
-                caches.keys().then(function(cacheNames) {
-                    cacheNames.forEach(function(cacheName) {
-                        caches.delete(cacheName);
-                    });
-                    console.log('PWA Cache cleared');
-                });
-            }
-            
-            // Force reload from server
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    for(let registration of registrations) {
-                        registration.unregister();
+            // Check if browser supports the new File System Access API
+            if ('showSaveFilePicker' in window) {
+                // Use modern "Save As" dialog
+                window.showSaveFilePicker({
+                    suggestedName: fileName,
+                    types: [{
+                        description: 'Text files',
+                        accept: { 'text/plain': ['.txt'] }
+                    }]
+                }).then(async (fileHandle) => {
+                    const writableStream = await fileHandle.createWritable();
+                    await writableStream.write(blob);
+                    await writableStream.close();
+                    alert('✅ Arbeitsbericht wurde erfolgreich gespeichert!\n\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
+                }).catch((err) => {
+                    // User cancelled or error occurred, fallback to regular download
+                    if (err.name !== 'AbortError') {
+                        downloadFile(blob, fileName, pageCount);
                     }
-                    console.log('Service Workers unregistered');
-                });
-            }
-        }
-
-        // Export as HTML with embedded images
-        function exportAsHTML() {
-            // Create HTML document
-            let htmlContent = `<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arbeitsbericht - ${studentInfo.firstName} ${studentInfo.lastName}</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #2c3e50;
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        .student-info {
-            color: #666;
-            font-size: 18px;
-        }
-        .page {
-            margin: 40px 0;
-            padding: 30px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            page-break-inside: avoid;
-        }
-        .page-header {
-            color: #2c3e50;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-        .question {
-            margin: 20px 0;
-        }
-        .question-title {
-            font-weight: bold;
-            color: #34495e;
-            margin-bottom: 8px;
-        }
-        .answer {
-            background: white;
-            padding: 15px;
-            border-radius: 5px;
-            white-space: pre-wrap;
-        }
-        .photo {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .photo img {
-            max-width: 100%;
-            max-height: 500px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .no-photo {
-            background: #e0e0e0;
-            padding: 40px;
-            text-align: center;
-            color: #999;
-            border-radius: 8px;
-            font-style: italic;
-        }
-        @media print {
-            body { background: white; }
-            .container { box-shadow: none; }
-            .page { break-inside: avoid; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Arbeitsbericht Werken</h1>
-            <p class="student-info">${studentInfo.firstName} ${studentInfo.lastName} - Klasse ${studentInfo.className}</p>
-            <p>Erstellt am: ${new Date().toLocaleDateString('de-DE')}</p>
-        </div>
-`;
-
-            // Add each page
-            let pageCount = 0;
-            for (let i = 0; i < maxPages; i++) {
-                if (pages[i].date && pages[i].saved) {
-                    pageCount++;
-                    const date = new Date(pages[i].date);
-                    
-                    htmlContent += `
-        <div class="page">
-            <div class="page-header">
-                Seite ${pageCount} - ${date.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-            </div>
-            
-            <div class="question">
-                <div class="question-title">🔨 Was habe ich heute gemacht?</div>
-                <div class="answer">${pages[i].workDescription || 'Keine Angabe'}</div>
-            </div>
-            
-            <div class="question">
-                <div class="question-title">🔧 Welche Werkzeuge/Maschinen habe ich verwendet?</div>
-                <div class="answer">${pages[i].toolsUsed || 'Keine Angabe'}</div>
-            </div>
-            
-            <div class="question">
-                <div class="question-title">✨ Was war neu für mich? Welche Erfahrungen habe ich gemacht?</div>
-                <div class="answer">${pages[i].newExperiences || 'Keine Angabe'}</div>
-            </div>
-            
-            <div class="question">
-                <div class="question-title">💡 Was hätte ich anders oder besser machen können?</div>
-                <div class="answer">${pages[i].improvements || 'Keine Angabe'}</div>
-            </div>
-            
-            <div class="photo">
-                <div class="question-title">📷 Foto vom Projektstand</div>
-                ${pages[i].photo ? 
-                    `<img src="${pages[i].photo}" alt="Projektfoto Seite ${pageCount}">` : 
-                    '<div class="no-photo">Kein Foto vorhanden</div>'
-                }
-            </div>
-        </div>`;
-                }
-            }
-
-            htmlContent += `
-    </div>
-</body>
-</html>`;
-
-            const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '_komplett.html';
-            
-            // Create file
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-            
-            // Try native sharing first
-            if (navigator.share) {
-                const file = new File([blob], fileName, { type: 'text/html' });
-                
-                navigator.share({
-                    title: 'Arbeitsbericht mit Fotos',
-                    text: 'Vollständiger Arbeitsbericht mit ' + pageCount + ' Seiten und Fotos',
-                    files: [file]
-                }).then(() => {
-                    console.log('HTML file shared successfully');
-                }).catch((error) => {
-                    console.log('Share failed, falling back to download:', error);
-                    downloadHTMLFile(blob, fileName, pageCount);
                 });
             } else {
-                downloadHTMLFile(blob, fileName, pageCount);
+                // Fallback to regular download for older browsers
+                downloadFile(blob, fileName, pageCount);
             }
         }
-        
-        function downloadHTMLFile(blob, fileName, pageCount) {
+
+        function downloadFile(blob, fileName, pageCount) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = fileName;
-            a.style.display = 'none';
             document.body.appendChild(a);
-            
             a.click();
-            
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-            
-            alert('🎨 HTML-Bericht mit Fotos erstellt!\n\n' + 
-                  'Name: ' + fileName + '\n' +
-                  'Seiten: ' + pageCount + ' (mit Fotos!)\n\n' +
-                  '🔍 So öffnest du die Datei:\n' +
-                  '1. Safari → Downloads\n' +
-                  '2. Datei antippen → öffnet im Browser\n' +
-                  '3. Kann gedruckt oder geteilt werden\n\n' +
-                  '💡 Tipp: Diese Datei enthält alle Fotos!');
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('✅ Arbeitsbericht wurde erfolgreich als "' + fileName + '" heruntergeladen!\n\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
         }
-        
-        // Initialize on page load
-        window.addEventListener('load', function() {
-            console.log('Page loaded, initializing...');
-            
-            // Clear cache if version parameter is present
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('clear') || urlParams.get('update') || urlParams.get('neu')) {
-                clearPWACache();
-                // Remove parameter from URL
-                const url = new URL(window.location);
-                url.searchParams.delete('clear');
-                url.searchParams.delete('update'); 
-                url.searchParams.delete('neu');
-                window.history.replaceState({}, document.title, url);
-            }
-            
-            init();
-            bindEventListeners();
-        });
 
-        // Prevent iOS bounce scrolling
-        document.addEventListener('touchmove', function(e) {
-            if (e.target.closest('.evaluation-content') || e.target.closest('.evaluation-table')) {
-                return;
-            }
-            if (e.scale !== 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
+        // Initialize on page load
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
