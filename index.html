@@ -684,7 +684,7 @@
                         💾 Seite speichern
                     </button>
                     <br>
-                    <button type="button" class="submit-btn final-save-btn" onclick="exportReport()" disabled>
+                    <button type="button" class="submit-btn final-save-btn" onclick="window.exportReport()" id="exportBtn" disabled>
                         📄 Bericht exportieren
                     </button>
                 </div>
@@ -1075,7 +1075,7 @@
             }
 
             // Update export button (only button now)
-            const exportBtn = document.querySelector('.final-save-btn');
+            const exportBtn = document.getElementById('exportBtn');
             let hasPages = false;
             
             for (let i = 0; i < maxPages; i++) {
@@ -1085,7 +1085,9 @@
                 }
             }
             
-            exportBtn.disabled = !hasPages;
+            if (exportBtn) {
+                exportBtn.disabled = !hasPages;
+            }
         }
 
         function handlePhotoUpload(event) {
