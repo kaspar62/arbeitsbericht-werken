@@ -684,12 +684,8 @@
                         💾 Seite speichern
                     </button>
                     <br>
-                    <button type="button" class="submit-btn" onclick="createBackup()" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); margin-top: 15px;" id="backupBtn">
-                        📤 Zwischensicherung für Lehrer erstellen
-                    </button>
-                    <br>
-                    <button type="button" class="submit-btn final-save-btn" onclick="finalSaveAndDownload()" disabled>
-                        📄 Komplettes PDF erstellen und speichern
+                    <button type="button" class="submit-btn final-save-btn" onclick="exportReport()" disabled>
+                        📄 Bericht exportieren
                     </button>
                 </div>
             </div>
@@ -1078,28 +1074,18 @@
                 statusDiv.innerHTML = '';
             }
 
-            // Update final save button
-            const finalSaveBtn = document.querySelector('.final-save-btn');
-            let allPagesSaved = true;
+            // Update export button (only button now)
+            const exportBtn = document.querySelector('.final-save-btn');
             let hasPages = false;
             
             for (let i = 0; i < maxPages; i++) {
-                if (pages[i].date) {
+                if (pages[i].date && pages[i].saved) {
                     hasPages = true;
-                    if (!pages[i].saved) {
-                        allPagesSaved = false;
-                        break;
-                    }
+                    break;
                 }
             }
             
-            finalSaveBtn.disabled = !hasPages || !allPagesSaved;
-            
-            // Update backup button
-            const backupBtn = document.getElementById('backupBtn');
-            if (backupBtn) {
-                backupBtn.disabled = !hasPages;
-            }
+            exportBtn.disabled = !hasPages;
         }
 
         function handlePhotoUpload(event) {
