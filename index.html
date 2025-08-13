@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📝 Arbeitsbericht Werken</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Arbeitsbericht Werken</title>
     <style>
         * {
             margin: 0;
@@ -18,6 +16,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -30,6 +29,7 @@
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
+            position: relative;
             margin-top: 20px;
         }
 
@@ -70,19 +70,16 @@
         }
 
         .student-input input {
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #e0e0e0;
             border-radius: 5px;
-            font-size: 16px;
-            width: 180px;
-            background: white;
-            color: #2c3e50;
+            font-size: 14px;
+            width: 150px;
         }
 
         .student-input input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .page-navigation {
@@ -106,13 +103,12 @@
         }
 
         .nav-btn {
-            padding: 12px 20px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            font-size: 14px;
         }
 
         .new-page-btn {
@@ -310,7 +306,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 10px;
+            margin: 0 10px;
         }
 
         .submit-btn:hover {
@@ -333,13 +329,14 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .export-btn {
+        .final-save-btn {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             font-size: 18px;
             padding: 20px 50px;
+            margin-top: 20px;
         }
 
-        .export-btn:hover {
+        .final-save-btn:hover {
             box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
         }
 
@@ -512,51 +509,8 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
-
-        .copy-section {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .copy-text {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: monospace;
-            font-size: 14px;
-            text-align: left;
-            white-space: pre-wrap;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .copy-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .copy-btn:hover {
-            background: #0056b3;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
             .container {
-                margin-top: 10px;
+                margin: 10px;
                 border-radius: 10px;
             }
             
@@ -584,20 +538,6 @@
 
             .student-input input {
                 width: 100%;
-            }
-            
-            .evaluation-content {
-                padding: 20px;
-                width: 95%;
-            }
-            
-            .evaluation-table {
-                font-size: 12px;
-            }
-            
-            .evaluation-table th,
-            .evaluation-table td {
-                padding: 8px 5px;
             }
         }
     </style>
@@ -629,13 +569,13 @@
                 <span id="pageIndicator">Seite 1 von 25</span>
             </div>
             <div class="nav-buttons">
-                <button class="nav-btn prev-btn" id="prevBtn" disabled>
+                <button class="nav-btn prev-btn" onclick="previousPage()" disabled>
                     ← Vorherige
                 </button>
-                <button class="nav-btn next-btn" id="nextBtn" disabled>
+                <button class="nav-btn next-btn" onclick="nextPage()" disabled>
                     Nächste →
                 </button>
-                <button class="nav-btn new-page-btn" id="newPageBtn">
+                <button class="nav-btn new-page-btn" onclick="createNewPage()">
                     ➕ Neue Seite
                 </button>
             </div>
@@ -659,6 +599,7 @@
                         class="text-input" 
                         placeholder="Beschreibe in 1-2 Sätzen, was du heute gearbeitet hast..."
                         maxlength="200"
+                        oninput="updateCharCounter('workDescription', 'desc-counter')"
                         disabled
                     ></textarea>
                     <div id="desc-counter" class="char-counter">0/200 Zeichen</div>
@@ -674,6 +615,7 @@
                         class="text-input" 
                         placeholder="Liste die Werkzeuge und Maschinen auf, die du benutzt hast..."
                         maxlength="200"
+                        oninput="updateCharCounter('toolsUsed', 'tools-counter')"
                         disabled
                     ></textarea>
                     <div id="tools-counter" class="char-counter">0/200 Zeichen</div>
@@ -689,6 +631,7 @@
                         class="text-input" 
                         placeholder="Beschreibe neue Erkenntnisse oder Erfahrungen aus der heutigen Arbeit..."
                         maxlength="200"
+                        oninput="updateCharCounter('newExperiences', 'exp-counter')"
                         disabled
                     ></textarea>
                     <div id="exp-counter" class="char-counter">0/200 Zeichen</div>
@@ -704,6 +647,7 @@
                         class="text-input" 
                         placeholder="Überlege, was du beim nächsten Mal verbessern könntest..."
                         maxlength="200"
+                        oninput="updateCharCounter('improvements', 'imp-counter')"
                         disabled
                     ></textarea>
                     <div id="imp-counter" class="char-counter">0/200 Zeichen</div>
@@ -715,7 +659,7 @@
                         Foto vom Projektstand
                     </div>
                     <div class="photo-section">
-                        <input type="file" id="photoUpload" class="photo-upload" accept="image/*" disabled>
+                        <input type="file" id="photoUpload" class="photo-upload" accept="image/*" onchange="handlePhotoUpload(event)" disabled>
                         <label for="photoUpload" class="photo-label disabled">
                             📷 Foto aufnehmen/hochladen
                         </label>
@@ -723,7 +667,7 @@
                         <div id="photoPreview" class="photo-preview">
                             <img id="previewImage" src="" alt="Projekt Foto">
                             <br>
-                            <button type="button" class="remove-photo" id="removePhotoBtn" disabled>
+                            <button type="button" class="remove-photo" onclick="removePhoto()" disabled>
                                 🗑️ Foto entfernen
                             </button>
                         </div>
@@ -733,26 +677,16 @@
                 <div id="pageStatus"></div>
 
                 <div class="submit-section">
-                    <button type="button" class="submit-btn preview-btn" id="previewBtn" disabled>
+                    <button type="button" class="submit-btn preview-btn" onclick="previewCurrentPage()" disabled>
                         👀 Seite Vorschau
                     </button>
-                    <button type="button" class="submit-btn" id="saveBtn" disabled>
+                    <button type="button" class="submit-btn" onclick="saveCurrentPage()" disabled>
                         💾 Seite speichern
                     </button>
                     <br>
-                    <button type="button" class="submit-btn export-btn" id="exportBtn" disabled>
+                    <button type="button" class="submit-btn final-save-btn" onclick="window.exportReport()" id="exportBtn" disabled>
                         📄 Bericht exportieren
                     </button>
-                </div>
-
-                <div class="copy-section" id="copySection" style="display: none;">
-                    <h3>📋 Kopiere deinen Bericht für die Abgabe</h3>
-                    <p>Da der automatische Download nicht funktioniert, kopiere den Text unten und füge ihn in ein Word-Dokument ein:</p>
-                    <div class="copy-text" id="copyText"></div>
-                    <button class="copy-btn" id="copyToClipboard">📋 Text kopieren</button>
-                    <p style="margin-top: 10px; font-size: 14px; color: #856404;">
-                        💡 <strong>Anleitung:</strong> Text kopieren → Word öffnen → Einfügen → Als "dein_name_datum.pdf" speichern → An Lehrer senden
-                    </p>
                 </div>
             </div>
         </div>
@@ -813,7 +747,7 @@
                     <strong>💡 Tipp:</strong> Schreibe ehrlich und ausführlich! Auch Fehler und Probleme sind wichtige Lernerfahrungen.
                 </div>
 
-                <button class="close-evaluation" id="closeEvaluationBtn">
+                <button class="close-evaluation" onclick="closeEvaluationPopup()">
                     ✅ Verstanden - Weiter zum Arbeitseintrag
                 </button>
             </div>
@@ -821,70 +755,93 @@
     </div>
 
     <script>
-        // Global variables - simple and stable
-        var currentPage = 0;
-        var maxPages = 25;
-        var pages = [];
-        var studentInfo = {};
+        // Global variables
+        let currentPage = 0;
+        let maxPages = 25;
+        let pages = [];
+        let studentInfo = {};
 
-        // Initialize pages array
-        for (var i = 0; i < maxPages; i++) {
-            pages[i] = {
-                date: null,
-                workDescription: '',
-                toolsUsed: '',
-                newExperiences: '',
-                improvements: '',
-                photo: null,
-                saved: false,
-                locked: false
-            };
-        }
-
-        // Simple event handlers
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show evaluation popup
+        // Show evaluation popup
+        function showEvaluationPopup() {
             document.getElementById('evaluationPopup').style.display = 'flex';
-            
-            // Bind events
-            document.getElementById('closeEvaluationBtn').addEventListener('click', closeEvaluationPopup);
-            document.getElementById('newPageBtn').addEventListener('click', createNewPage);
-            document.getElementById('prevBtn').addEventListener('click', previousPage);
-            document.getElementById('nextBtn').addEventListener('click', nextPage);
-            document.getElementById('saveBtn').addEventListener('click', saveCurrentPage);
-            document.getElementById('previewBtn').addEventListener('click', previewCurrentPage);
-            document.getElementById('exportBtn').addEventListener('click', exportReport);
-            document.getElementById('photoUpload').addEventListener('change', handlePhotoUpload);
-            document.getElementById('removePhotoBtn').addEventListener('click', removePhoto);
-            document.getElementById('copyToClipboard').addEventListener('click', copyToClipboard);
-            
-            // Bind text counters
-            document.getElementById('workDescription').addEventListener('input', function() {
-                updateCharCounter('workDescription', 'desc-counter');
-            });
-            document.getElementById('toolsUsed').addEventListener('input', function() {
-                updateCharCounter('toolsUsed', 'tools-counter');
-            });
-            document.getElementById('newExperiences').addEventListener('input', function() {
-                updateCharCounter('newExperiences', 'exp-counter');
-            });
-            document.getElementById('improvements').addEventListener('input', function() {
-                updateCharCounter('improvements', 'imp-counter');
-            });
-            
-            updatePageDisplay();
-            updateNavigation();
-        });
+        }
 
         function closeEvaluationPopup() {
             document.getElementById('evaluationPopup').style.display = 'none';
         }
 
+        // Initialize
+        function init() {
+            // Try to load existing data from localStorage
+            try {
+                const savedData = localStorage.getItem('arbeitsberichtData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    pages = data.pages || [];
+                    studentInfo = data.studentInfo || {};
+                    currentPage = data.currentPage || 0;
+                    
+                    // Restore student info if available
+                    if (studentInfo.firstName) {
+                        document.getElementById('firstName').value = studentInfo.firstName;
+                        document.getElementById('lastName').value = studentInfo.lastName;
+                        document.getElementById('className').value = studentInfo.className;
+                        
+                        // Lock student info if data exists
+                        document.getElementById('firstName').disabled = true;
+                        document.getElementById('lastName').disabled = true;
+                        document.getElementById('className').disabled = true;
+                    }
+                }
+            } catch (e) {
+                console.log('No saved data found, starting fresh');
+            }
+
+            // Initialize empty pages array if not loaded
+            if (pages.length === 0) {
+                for (let i = 0; i < maxPages; i++) {
+                    pages[i] = {
+                        date: null,
+                        workDescription: '',
+                        toolsUsed: '',
+                        newExperiences: '',
+                        improvements: '',
+                        photo: null,
+                        saved: false,
+                        locked: false
+                    };
+                }
+            }
+            
+            updatePageDisplay();
+            updateNavigation();
+            updateEditingState();
+            
+            // Show evaluation popup on startup
+            showEvaluationPopup();
+        }
+
+        // Save data to localStorage whenever something changes
+        function saveToLocalStorage() {
+            try {
+                const dataToSave = {
+                    pages: pages,
+                    studentInfo: studentInfo,
+                    currentPage: currentPage,
+                    lastSaved: new Date().toISOString()
+                };
+                localStorage.setItem('arbeitsberichtData', JSON.stringify(dataToSave));
+                console.log('Data saved to localStorage');
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
+        }
+
         function updateCharCounter(textareaId, counterId) {
-            var textarea = document.getElementById(textareaId);
-            var counter = document.getElementById(counterId);
-            var current = textarea.value.length;
-            var max = textarea.maxLength;
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            const current = textarea.value.length;
+            const max = textarea.maxLength;
             counter.textContent = current + '/' + max + ' Zeichen';
             
             if (current > max * 0.9) {
@@ -895,11 +852,11 @@
         }
 
         function createNewPage() {
-            // Save student info
+            // Save current student info
             studentInfo = {
-                firstName: document.getElementById('firstName').value.trim(),
-                lastName: document.getElementById('lastName').value.trim(),
-                className: document.getElementById('className').value.trim()
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                className: document.getElementById('className').value
             };
 
             if (!studentInfo.firstName || !studentInfo.lastName || !studentInfo.className) {
@@ -908,8 +865,8 @@
             }
 
             // Find first empty page
-            var emptyPageIndex = -1;
-            for (var i = 0; i < maxPages; i++) {
+            let emptyPageIndex = -1;
+            for (let i = 0; i < maxPages; i++) {
                 if (!pages[i].date) {
                     emptyPageIndex = i;
                     break;
@@ -921,7 +878,7 @@
                 return;
             }
 
-            // Create new page
+            // Create new page with current date
             pages[emptyPageIndex] = {
                 date: new Date().toISOString().split('T')[0],
                 workDescription: '',
@@ -933,52 +890,63 @@
                 locked: false
             };
 
+            // Switch to new page
             currentPage = emptyPageIndex;
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
             updatePageDisplay();
             updateNavigation();
             enableEditing();
 
-            // Lock student info
-            document.getElementById('firstName').disabled = true;
-            document.getElementById('lastName').disabled = true;
-            document.getElementById('className').disabled = true;
+            // Show evaluation popup when creating new page
+            showEvaluationPopup();
 
-            // Show evaluation popup again
-            document.getElementById('evaluationPopup').style.display = 'flex';
+            // Lock student info after first page
+            if (emptyPageIndex === 0) {
+                document.getElementById('firstName').disabled = true;
+                document.getElementById('lastName').disabled = true;
+                document.getElementById('className').disabled = true;
+            }
         }
 
         function previousPage() {
-            for (var i = currentPage - 1; i >= 0; i--) {
-                if (pages[i].date) {
-                    currentPage = i;
-                    break;
+            if (currentPage > 0) {
+                for (let i = currentPage - 1; i >= 0; i--) {
+                    if (pages[i].date) {
+                        currentPage = i;
+                        break;
+                    }
                 }
+                updatePageDisplay();
+                updateNavigation();
+                updateEditingState();
             }
-            updatePageDisplay();
-            updateNavigation();
-            updateEditingState();
         }
 
         function nextPage() {
-            for (var i = currentPage + 1; i < maxPages; i++) {
-                if (pages[i].date) {
-                    currentPage = i;
-                    break;
+            if (currentPage < maxPages - 1) {
+                for (let i = currentPage + 1; i < maxPages; i++) {
+                    if (pages[i].date) {
+                        currentPage = i;
+                        break;
+                    }
                 }
+                updatePageDisplay();
+                updateNavigation();
+                updateEditingState();
             }
-            updatePageDisplay();
-            updateNavigation();
-            updateEditingState();
         }
 
         function updatePageDisplay() {
-            var currentPageData = pages[currentPage];
-            var pageNumber = getPageNumber(currentPage);
+            const currentPageData = pages[currentPage];
+            const pageNumber = getPageNumber(currentPage);
             
             document.getElementById('pageIndicator').textContent = 'Seite ' + pageNumber + ' von 25';
             
             if (currentPageData.date) {
-                var date = new Date(currentPageData.date);
+                const date = new Date(currentPageData.date);
                 document.getElementById('currentDate').textContent = 
                     '📅 ' + date.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             } else {
@@ -1006,34 +974,35 @@
                 document.getElementById('photoPreview').style.display = 'none';
             }
 
+            // Update page status
             updatePageStatus();
         }
 
         function getPageNumber(index) {
-            var count = 0;
-            for (var i = 0; i <= index; i++) {
+            let count = 0;
+            for (let i = 0; i <= index; i++) {
                 if (pages[i].date) count++;
             }
             return count;
         }
 
         function updateNavigation() {
-            var prevBtn = document.getElementById('prevBtn');
-            var nextBtn = document.getElementById('nextBtn');
-            var newPageBtn = document.getElementById('newPageBtn');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const newPageBtn = document.querySelector('.new-page-btn');
 
-            // Check previous pages
-            var hasPrevious = false;
-            for (var i = currentPage - 1; i >= 0; i--) {
+            // Check if there are previous pages
+            let hasPrevious = false;
+            for (let i = currentPage - 1; i >= 0; i--) {
                 if (pages[i].date) {
                     hasPrevious = true;
                     break;
                 }
             }
 
-            // Check next pages
-            var hasNext = false;
-            for (var i = currentPage + 1; i < maxPages; i++) {
+            // Check if there are next pages
+            let hasNext = false;
+            for (let i = currentPage + 1; i < maxPages; i++) {
                 if (pages[i].date) {
                     hasNext = true;
                     break;
@@ -1043,9 +1012,9 @@
             prevBtn.disabled = !hasPrevious;
             nextBtn.disabled = !hasNext;
 
-            // Check if can create new pages
-            var canCreateNew = false;
-            for (var i = 0; i < maxPages; i++) {
+            // Check if we can create new pages
+            let canCreateNew = false;
+            for (let i = 0; i < maxPages; i++) {
                 if (!pages[i].date) {
                     canCreateNew = true;
                     break;
@@ -1055,7 +1024,7 @@
         }
 
         function updateEditingState() {
-            var currentPageData = pages[currentPage];
+            const currentPageData = pages[currentPage];
             
             if (currentPageData.locked) {
                 disableEditing();
@@ -1073,9 +1042,10 @@
             document.getElementById('improvements').disabled = false;
             document.getElementById('photoUpload').disabled = false;
             document.querySelector('.photo-label').classList.remove('disabled');
-            document.getElementById('removePhotoBtn').disabled = false;
-            document.getElementById('previewBtn').disabled = false;
-            document.getElementById('saveBtn').disabled = false;
+            document.querySelector('.remove-photo').disabled = false;
+            const submitBtns = document.querySelectorAll('.submit-btn:not(.final-save-btn)');
+            document.querySelector('.preview-btn').disabled = false;
+            submitBtns.forEach(btn => btn.disabled = false);
         }
 
         function disableEditing() {
@@ -1085,14 +1055,14 @@
             document.getElementById('improvements').disabled = true;
             document.getElementById('photoUpload').disabled = true;
             document.querySelector('.photo-label').classList.add('disabled');
-            document.getElementById('removePhotoBtn').disabled = true;
-            document.getElementById('previewBtn').disabled = true;
-            document.getElementById('saveBtn').disabled = true;
+            document.querySelector('.remove-photo').disabled = true;
+            document.querySelector('.preview-btn').disabled = true;
+            document.querySelector('.submit-btn').disabled = true;
         }
 
         function updatePageStatus() {
-            var currentPageData = pages[currentPage];
-            var statusDiv = document.getElementById('pageStatus');
+            const currentPageData = pages[currentPage];
+            const statusDiv = document.getElementById('pageStatus');
             
             if (currentPageData.locked) {
                 statusDiv.innerHTML = '<div class="locked-indicator">🔒 Diese Seite ist gespeichert und kann nicht mehr bearbeitet werden</div>';
@@ -1104,24 +1074,26 @@
                 statusDiv.innerHTML = '';
             }
 
-            // Update export button
-            var exportBtn = document.getElementById('exportBtn');
-            var hasPages = false;
+            // Update export button (only button now)
+            const exportBtn = document.getElementById('exportBtn');
+            let hasPages = false;
             
-            for (var i = 0; i < maxPages; i++) {
+            for (let i = 0; i < maxPages; i++) {
                 if (pages[i].date && pages[i].saved) {
                     hasPages = true;
                     break;
                 }
             }
             
-            exportBtn.disabled = !hasPages;
+            if (exportBtn) {
+                exportBtn.disabled = !hasPages;
+            }
         }
 
         function handlePhotoUpload(event) {
-            var file = event.target.files[0];
+            const file = event.target.files[0];
             if (file) {
-                var reader = new FileReader();
+                const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('previewImage').src = e.target.result;
                     document.getElementById('photoPreview').style.display = 'block';
@@ -1137,15 +1109,15 @@
         }
 
         function validateCurrentPage() {
-            var currentPageData = pages[currentPage];
+            const currentPageData = pages[currentPage];
             
             if (!currentPageData || !currentPageData.date) {
                 alert('Bitte erstelle zuerst eine neue Seite.');
                 return false;
             }
 
-            var description = document.getElementById('workDescription').value.trim();
-            var tools = document.getElementById('toolsUsed').value.trim();
+            const description = document.getElementById('workDescription').value.trim();
+            const tools = document.getElementById('toolsUsed').value.trim();
 
             if (!description) {
                 alert('Bitte beschreibe, was du heute gemacht hast.');
@@ -1163,20 +1135,21 @@
         function saveCurrentPage() {
             if (!validateCurrentPage()) return;
 
-            var currentPageData = pages[currentPage];
+            const currentPageData = pages[currentPage];
             
-            // Save form data
+            // Save current form data to page
             currentPageData.workDescription = document.getElementById('workDescription').value;
             currentPageData.toolsUsed = document.getElementById('toolsUsed').value;
             currentPageData.newExperiences = document.getElementById('newExperiences').value;
             currentPageData.improvements = document.getElementById('improvements').value;
-            
-            var photoImg = document.getElementById('previewImage');
-            currentPageData.photo = photoImg.src || null;
-            
+            currentPageData.photo = document.getElementById('previewImage').src;
             currentPageData.saved = true;
-            currentPageData.locked = true;
+            currentPageData.locked = true; // Lock after saving
 
+            // Save to localStorage
+            saveToLocalStorage();
+
+            // Update UI
             updatePageStatus();
             disableEditing();
             
@@ -1186,8 +1159,8 @@
         function previewCurrentPage() {
             if (!validateCurrentPage()) return;
 
-            var currentPageData = pages[currentPage];
-            var data = {
+            const currentPageData = pages[currentPage];
+            const data = {
                 date: currentPageData.date,
                 description: document.getElementById('workDescription').value,
                 tools: document.getElementById('toolsUsed').value,
@@ -1196,7 +1169,7 @@
                 photo: document.getElementById('previewImage').src
             };
 
-            var previewHTML = '<h2>Arbeitsbericht vom ' + new Date(data.date).toLocaleDateString('de-DE') + '</h2>';
+            let previewHTML = '<h2>Arbeitsbericht vom ' + new Date(data.date).toLocaleDateString('de-DE') + '</h2>';
             previewHTML += '<h3>Was habe ich heute gemacht?</h3>';
             previewHTML += '<p>' + data.description + '</p>';
             previewHTML += '<h3>Welche Werkzeuge/Maschinen habe ich verwendet?</h3>';
@@ -1210,81 +1183,77 @@
                 previewHTML += '<h3>Foto</h3><img src="' + data.photo + '" style="max-width: 400px; border-radius: 8px;">';
             }
 
-            var previewWindow = window.open('', '_blank');
+            const previewWindow = window.open('', '_blank');
             previewWindow.document.write('<html><head><title>Arbeitsbericht Vorschau</title><style>body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; } h2 { color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom: 10px; } h3 { color: #34495e; margin-top: 20px; } p { line-height: 1.6; margin-bottom: 15px; }</style></head><body>' + previewHTML + '</body></html>');
         }
 
-        function exportReport() {
-            var savedCount = 0;
-            for (var i = 0; i < maxPages; i++) {
-                if (pages[i].date && pages[i].saved) savedCount++;
-            }
+        function finalSaveAndDownload() {
+            // Generate PDF content
+            let pdfContent = 'ARBEITSBERICHT WERKEN\n';
+            pdfContent += studentInfo.firstName + ' ' + studentInfo.lastName + ' - Klasse ' + studentInfo.className + '\n\n';
+            pdfContent += 'Generiert am: ' + new Date().toLocaleString('de-DE') + '\n\n';
 
-            if (savedCount === 0) {
-                alert('Noch keine Seiten gespeichert!');
-                return;
-            }
-
-            // Generate text version for copy-paste
-            var textContent = 'ARBEITSBERICHT WERKEN\n';
-            textContent += studentInfo.firstName + ' ' + studentInfo.lastName + ' - Klasse ' + studentInfo.className + '\n\n';
-            textContent += 'Erstellt am: ' + new Date().toLocaleString('de-DE') + '\n';
-            textContent += 'Anzahl Seiten: ' + savedCount + '\n\n';
-
-            var count = 0;
-            for (var i = 0; i < maxPages; i++) {
+            let pageCount = 0;
+            for (let i = 0; i < maxPages; i++) {
                 if (pages[i].date && pages[i].saved) {
-                    count++;
-                    var date = new Date(pages[i].date);
-                    textContent += '==========================================\n';
-                    textContent += 'SEITE ' + count + ' - ' + date.toLocaleDateString('de-DE') + '\n';
-                    textContent += '==========================================\n\n';
-                    textContent += 'Was habe ich heute gemacht?\n' + pages[i].workDescription + '\n\n';
-                    textContent += 'Welche Werkzeuge/Maschinen habe ich verwendet?\n' + pages[i].toolsUsed + '\n\n';
-                    textContent += 'Was war neu für mich? Welche Erfahrungen habe ich gemacht?\n' + pages[i].newExperiences + '\n\n';
-                    textContent += 'Was hätte ich anders oder besser machen können?\n' + pages[i].improvements + '\n\n';
-                    textContent += (pages[i].photo ? '[FOTO VORHANDEN]' : '[KEIN FOTO]') + '\n\n';
+                    pageCount++;
+                    const date = new Date(pages[i].date);
+                    pdfContent += '\n==========================================\n';
+                    pdfContent += 'SEITE ' + pageCount + ' - ' + date.toLocaleDateString('de-DE') + '\n';
+                    pdfContent += '==========================================\n\n';
+                    pdfContent += 'Was habe ich heute gemacht?\n' + pages[i].workDescription + '\n\n';
+                    pdfContent += 'Welche Werkzeuge/Maschinen habe ich verwendet?\n' + pages[i].toolsUsed + '\n\n';
+                    pdfContent += 'Was war neu für mich? Welche Erfahrungen habe ich gemacht?\n' + pages[i].newExperiences + '\n\n';
+                    pdfContent += 'Was hätte ich anders oder besser machen können?\n' + pages[i].improvements + '\n\n';
+                    pdfContent += (pages[i].photo ? '[FOTO VORHANDEN]' : '[KEIN FOTO]') + '\n\n';
                 }
             }
 
-            // Show copy section
-            document.getElementById('copyText').textContent = textContent;
-            document.getElementById('copySection').style.display = 'block';
-            document.getElementById('copySection').scrollIntoView({ behavior: 'smooth' });
-        }
+            const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '.txt';
 
-        function copyToClipboard() {
-            var copyText = document.getElementById('copyText');
+            // Create downloadable file with "Save As" dialog
+            const blob = new Blob([pdfContent], { type: 'text/plain;charset=utf-8' });
             
-            // Try modern clipboard API
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(copyText.textContent).then(function() {
-                    alert('✅ Text wurde in die Zwischenablage kopiert!\n\nJetzt kannst du ihn in Word einfügen.');
-                }).catch(function() {
-                    // Fallback
-                    fallbackCopy();
+            // Check if browser supports the new File System Access API
+            if ('showSaveFilePicker' in window) {
+                // Use modern "Save As" dialog
+                window.showSaveFilePicker({
+                    suggestedName: fileName,
+                    types: [{
+                        description: 'Text files',
+                        accept: { 'text/plain': ['.txt'] }
+                    }]
+                }).then(async (fileHandle) => {
+                    const writableStream = await fileHandle.createWritable();
+                    await writableStream.write(blob);
+                    await writableStream.close();
+                    alert('✅ Arbeitsbericht wurde erfolgreich gespeichert!\n\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
+                }).catch((err) => {
+                    // User cancelled or error occurred, fallback to regular download
+                    if (err.name !== 'AbortError') {
+                        downloadFile(blob, fileName, pageCount);
+                    }
                 });
             } else {
-                fallbackCopy();
+                // Fallback to regular download for older browsers
+                downloadFile(blob, fileName, pageCount);
             }
         }
 
-        function fallbackCopy() {
-            var copyText = document.getElementById('copyText');
-            var range = document.createRange();
-            range.selectNode(copyText);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            
-            try {
-                document.execCommand('copy');
-                alert('✅ Text wurde kopiert! Füge ihn jetzt in Word ein.');
-            } catch (err) {
-                alert('Bitte markiere den Text manuell und kopiere ihn mit Cmd+C (Mac) oder Ctrl+C (Windows)');
-            }
-            
-            window.getSelection().removeAllRanges();
+        function downloadFile(blob, fileName, pageCount) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('✅ Arbeitsbericht wurde erfolgreich als "' + fileName + '" heruntergeladen!\n\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
         }
+
+        // Initialize on page load
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
