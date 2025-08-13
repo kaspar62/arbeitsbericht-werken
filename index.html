@@ -684,7 +684,46 @@
                         💾 Seite speichern
                     </button>
                     <br>
-                    <button type="button" class="submit-btn final-save-btn" onclick="doExport()" id="exportBtn" disabled>
+                    <button type="button" class="submit-btn final-save-btn" id="exportBtn" disabled onclick="
+                        // Inline export - kann nicht verloren gehen
+                        let savedCount = 0;
+                        for (let i = 0; i < maxPages; i++) {
+                            if (pages[i].date && pages[i].saved) savedCount++;
+                        }
+                        if (savedCount === 0) {
+                            alert('Noch keine Seiten gespeichert!');
+                            return;
+                        }
+                        
+                        let html = '<!DOCTYPE html><html><head><title>Arbeitsbericht</title></head><body><h1>Arbeitsbericht</h1>';
+                        let count = 0;
+                        for (let i = 0; i < maxPages; i++) {
+                            if (pages[i].date && pages[i].saved) {
+                                count++;
+                                html += '<h2>Seite ' + count + ' - ' + pages[i].date + '</h2>';
+                                html += '<p><strong>Was gemacht:</strong> ' + pages[i].workDescription + '</p>';
+                                html += '<p><strong>Werkzeuge:</strong> ' + pages[i].toolsUsed + '</p>';
+                                html += '<p><strong>Erfahrungen:</strong> ' + pages[i].newExperiences + '</p>';
+                                html += '<p><strong>Verbesserungen:</strong> ' + pages[i].improvements + '</p>';
+                                if (pages[i].photo) {
+                                    html += '<img src=\'' + pages[i].photo + '\' style=\'max-width:100%;\'>';
+                                }
+                                html += '<hr>';
+                            }
+                        }
+                        html += '</body></html>';
+                        
+                        let blob = new Blob([html], {type: 'text/html'});
+                        let url = URL.createObjectURL(blob);
+                        let a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'arbeitsbericht_' + studentInfo.firstName + '.html';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        alert('Download gestartet!');
+                    ">
                         📄 Bericht exportieren
                     </button>
                 </div>
