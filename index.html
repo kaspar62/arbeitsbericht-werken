@@ -1240,31 +1240,33 @@
             // Create downloadable HTML file
             const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
             
-            // Check if we're on iOS/iPad
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            
-            if (isIOS) {
-                // For iOS: Create a download link and click it
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                a.style.display = 'none';
-                document.body.appendChild(a);
+            // Check if Web Share API is available (iOS Safari supports it)
+            if (navigator.share && navigator.canShare) {
+                // Try to use Web Share API for iOS/iPad
+                const file = new File([blob], fileName, { type: 'text/html' });
                 
-                // Try to trigger download
-                a.click();
-                
-                // Show instructions for iOS users
-                setTimeout(() => {
-                    alert('📱 iPad Speicher-Info:\n\nDie Datei "' + fileName + '" wurde heruntergeladen.\n\nWo finde ich sie?\n→ Öffne die "Dateien" App\n→ Schaue unter "Downloads" oder "Auf meinem iPad"\n\nTipp: Du kannst auch lange auf den Export-Button drücken und "Verknüpfte Datei laden" wählen.\n\nInsgesamt ' + pageCount + ' Seiten mit Bildern exportiert.');
-                    
-                    // Clean up
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 100);
+                // Check if we can share files
+                if (navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: 'Arbeitsbericht Export',
+                        text: 'Arbeitsbericht mit ' + pageCount + ' Seiten'
+                    }).then(() => {
+                        alert('✅ Export erfolgreich!\n\nDer Bericht wurde geteilt/gespeichert.');
+                    }).catch((error) => {
+                        // If share was cancelled or failed, fall back to download
+                        if (error.name !== 'AbortError') {
+                            console.error('Share failed:', error);
+                            // Fallback to normal download
+                            downloadFile(blob, fileName, pageCount);
+                        }
+                    });
+                } else {
+                    // Can't share files, try normal download
+                    downloadFile(blob, fileName, pageCount);
+                }
             } else {
-                // Use normal download for other browsers
+                // No Web Share API, use normal download
                 downloadFile(blob, fileName, pageCount);
             }
         }
