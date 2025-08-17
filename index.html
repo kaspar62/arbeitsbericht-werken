@@ -1256,6 +1256,9 @@
             alert('✅ Arbeitsbericht wurde erfolgreich als "' + fileName + '" heruntergeladen!\n\nInsgesamt ' + pageCount + ' Seiten mit Bildern gespeichert.');
         }
 
+        // Export function binding for button
+        window.exportReport = finalSaveAndDownload;
+        
         // Initialize on page load
         window.addEventListener('load', init);
     </script>
