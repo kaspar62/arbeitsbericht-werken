@@ -1188,56 +1188,60 @@
         }
 
         function finalSaveAndDownload() {
-            // Generate PDF content
-            let pdfContent = 'ARBEITSBERICHT WERKEN\n';
-            pdfContent += studentInfo.firstName + ' ' + studentInfo.lastName + ' - Klasse ' + studentInfo.className + '\n\n';
-            pdfContent += 'Generiert am: ' + new Date().toLocaleString('de-DE') + '\n\n';
+            // Generate HTML content with embedded images
+            let htmlContent = '<!DOCTYPE html>\n<html lang="de">\n<head>\n';
+            htmlContent += '<meta charset="UTF-8">\n';
+            htmlContent += '<title>Arbeitsbericht - ' + studentInfo.firstName + ' ' + studentInfo.lastName + '</title>\n';
+            htmlContent += '<style>body{font-family:Arial,sans-serif;max-width:800px;margin:20px auto;padding:20px;}';
+            htmlContent += 'h1{color:#2c3e50;}h2{color:#34495e;border-bottom:2px solid #667eea;padding-bottom:5px;}';
+            htmlContent += 'h3{color:#667eea;margin-top:15px;}p{line-height:1.6;margin:10px 0;}';
+            htmlContent += 'img{max-width:100%;height:auto;display:block;margin:20px 0;border:2px solid #ddd;border-radius:8px;}';
+            htmlContent += '.page{page-break-after:always;margin-bottom:40px;padding-bottom:20px;border-bottom:3px solid #eee;}';
+            htmlContent += '</style>\n</head>\n<body>\n';
+            
+            htmlContent += '<h1>ARBEITSBERICHT WERKEN</h1>\n';
+            htmlContent += '<p><strong>' + studentInfo.firstName + ' ' + studentInfo.lastName + ' - Klasse ' + studentInfo.className + '</strong></p>\n';
+            htmlContent += '<p>Generiert am: ' + new Date().toLocaleString('de-DE') + '</p>\n';
+            htmlContent += '<hr>\n';
 
             let pageCount = 0;
             for (let i = 0; i < maxPages; i++) {
                 if (pages[i].date && pages[i].saved) {
                     pageCount++;
                     const date = new Date(pages[i].date);
-                    pdfContent += '\n==========================================\n';
-                    pdfContent += 'SEITE ' + pageCount + ' - ' + date.toLocaleDateString('de-DE') + '\n';
-                    pdfContent += '==========================================\n\n';
-                    pdfContent += 'Was habe ich heute gemacht?\n' + pages[i].workDescription + '\n\n';
-                    pdfContent += 'Welche Werkzeuge/Maschinen habe ich verwendet?\n' + pages[i].toolsUsed + '\n\n';
-                    pdfContent += 'Was war neu für mich? Welche Erfahrungen habe ich gemacht?\n' + pages[i].newExperiences + '\n\n';
-                    pdfContent += 'Was hätte ich anders oder besser machen können?\n' + pages[i].improvements + '\n\n';
-                    pdfContent += (pages[i].photo ? '[FOTO VORHANDEN]' : '[KEIN FOTO]') + '\n\n';
+                    htmlContent += '<div class="page">\n';
+                    htmlContent += '<h2>SEITE ' + pageCount + ' - ' + date.toLocaleDateString('de-DE') + '</h2>\n';
+                    
+                    htmlContent += '<h3>Was habe ich heute gemacht?</h3>\n';
+                    htmlContent += '<p>' + (pages[i].workDescription || 'Keine Angabe') + '</p>\n';
+                    
+                    htmlContent += '<h3>Welche Werkzeuge/Maschinen habe ich verwendet?</h3>\n';
+                    htmlContent += '<p>' + (pages[i].toolsUsed || 'Keine Angabe') + '</p>\n';
+                    
+                    htmlContent += '<h3>Was war neu für mich? Welche Erfahrungen habe ich gemacht?</h3>\n';
+                    htmlContent += '<p>' + (pages[i].newExperiences || 'Keine Angabe') + '</p>\n';
+                    
+                    htmlContent += '<h3>Was hätte ich anders oder besser machen können?</h3>\n';
+                    htmlContent += '<p>' + (pages[i].improvements || 'Keine Angabe') + '</p>\n';
+                    
+                    if (pages[i].photo && pages[i].photo !== '') {
+                        htmlContent += '<h3>Foto vom Projektstand</h3>\n';
+                        htmlContent += '<img src="' + pages[i].photo + '" alt="Projektfoto Seite ' + pageCount + '">\n';
+                    }
+                    
+                    htmlContent += '</div>\n';
                 }
             }
 
-            const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '.txt';
+            htmlContent += '</body>\n</html>';
 
-            // Create downloadable file with "Save As" dialog
-            const blob = new Blob([pdfContent], { type: 'text/plain;charset=utf-8' });
+            const fileName = studentInfo.firstName + '.' + studentInfo.lastName + '_' + studentInfo.className + '.html';
+
+            // Create downloadable HTML file
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
             
-            // Check if browser supports the new File System Access API
-            if ('showSaveFilePicker' in window) {
-                // Use modern "Save As" dialog
-                window.showSaveFilePicker({
-                    suggestedName: fileName,
-                    types: [{
-                        description: 'Text files',
-                        accept: { 'text/plain': ['.txt'] }
-                    }]
-                }).then(async (fileHandle) => {
-                    const writableStream = await fileHandle.createWritable();
-                    await writableStream.write(blob);
-                    await writableStream.close();
-                    alert('✅ Arbeitsbericht wurde erfolgreich gespeichert!\n\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
-                }).catch((err) => {
-                    // User cancelled or error occurred, fallback to regular download
-                    if (err.name !== 'AbortError') {
-                        downloadFile(blob, fileName, pageCount);
-                    }
-                });
-            } else {
-                // Fallback to regular download for older browsers
-                downloadFile(blob, fileName, pageCount);
-            }
+            // Use simple download method for better iOS/Safari compatibility
+            downloadFile(blob, fileName, pageCount);
         }
 
         function downloadFile(blob, fileName, pageCount) {
@@ -1249,7 +1253,7 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            alert('✅ Arbeitsbericht wurde erfolgreich als "' + fileName + '" heruntergeladen!\n\nInsgesamt ' + pageCount + ' Seiten gespeichert.');
+            alert('✅ Arbeitsbericht wurde erfolgreich als "' + fileName + '" heruntergeladen!\n\nInsgesamt ' + pageCount + ' Seiten mit Bildern gespeichert.');
         }
 
         // Initialize on page load
