@@ -1244,19 +1244,25 @@
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             
             if (isIOS) {
-                // For iOS: Open in new tab so user can save manually
+                // For iOS: Create a download link and click it
                 const url = URL.createObjectURL(blob);
-                const newWindow = window.open(url, '_blank');
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                
+                // Try to trigger download
+                a.click();
                 
                 // Show instructions for iOS users
                 setTimeout(() => {
-                    alert('📱 iPad/iPhone Anleitung:\n\n1. Die HTML-Datei wurde in einem neuen Tab geöffnet\n2. Tippe auf das Teilen-Symbol (Quadrat mit Pfeil)\n3. Wähle "In Dateien sichern"\n4. Wähle einen Speicherort\n\nInsgesamt ' + pageCount + ' Seiten mit Bildern exportiert.');
-                }, 500);
-                
-                // Clean up after a delay
-                setTimeout(() => {
+                    alert('📱 iPad Speicher-Info:\n\nDie Datei "' + fileName + '" wurde heruntergeladen.\n\nWo finde ich sie?\n→ Öffne die "Dateien" App\n→ Schaue unter "Downloads" oder "Auf meinem iPad"\n\nTipp: Du kannst auch lange auf den Export-Button drücken und "Verknüpfte Datei laden" wählen.\n\nInsgesamt ' + pageCount + ' Seiten mit Bildern exportiert.');
+                    
+                    // Clean up
+                    document.body.removeChild(a);
                     URL.revokeObjectURL(url);
-                }, 60000); // Clean up after 1 minute
+                }, 100);
             } else {
                 // Use normal download for other browsers
                 downloadFile(blob, fileName, pageCount);
